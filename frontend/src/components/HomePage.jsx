@@ -25,7 +25,7 @@ function HomePage() {
 
       <section className="py-12 px-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Restaurants</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {restaurants.map((restaurant, index) => (
             <div key={index} className="bg-white rounded-lg shadow border border-gray-200">
               <Carousel images={restaurant.menu} />

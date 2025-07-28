@@ -37,10 +37,10 @@ function Carousel({ images }) {
   };
 
   return (
-    <div className="relative w-full h-56 overflow-hidden rounded-lg" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+    <div className="relative w-full h-112 overflow-hidden rounded-lg" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
       <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${current * 100}%)` }}>
         {images.map((img, i) => (
-          <img key={i} src={img} alt={`Slide ${i}`} className="w-full h-56 object-cover flex-shrink-0" />
+          <img key={i} src={img} alt={`Slide ${i}`} className="w-full h-112 object-cover flex-shrink-0" />
         ))}
       </div>
 
