@@ -2,7 +2,7 @@ function Footer() {
     return (
         <div>
             <footer>
-                <h1>I am footer</h1>
+                <p className="text-center">QLunch @2025 - All rights reserved</p>
             </footer>
         </div>
     );

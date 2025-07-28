@@ -33,17 +33,17 @@ function HomePage() {
                 '/vite.svg',
             ],
         },
-        {
-            name: "Ghar ka Khana",
-            menu: [
-                '/vite.svg',
-                '/vite.svg',
-                '/vite.svg',
-                '/vite.svg',
-                '/vite.svg',
-                '/vite.svg',
-            ],
-        },
+        // {
+        //     name: "Ghar ka Khana",
+        //     menu: [
+        //         '/vite.svg',
+        //         '/vite.svg',
+        //         '/vite.svg',
+        //         '/vite.svg',
+        //         '/vite.svg',
+        //         '/vite.svg',
+        //     ],
+        // },
     ];
 
   return (
@@ -57,8 +57,8 @@ function HomePage() {
         </p>
       </section>
 
-      <section className="py-12 px-6 max-w-6xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Popular Restaurants</h2>
+      <section className="py-12 px-6 max-w-4xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Restaurants</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {restaurants.map((restaurant, index) => (
                 <div key={index} className="bg-white rounded shadow p-4">

@@ -7,13 +7,13 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <a href="/" className="text-xl font-bold text-blue-600">MyApp</a>
+            <img src="Qbatch_iddODzB85h_1.svg" alt="" />
           </div>
 
           {/* Links */}
           <div className="hidden md:flex space-x-6">
             <a href="#" className="text-gray-700 hover:text-blue-600">Home</a>
-            <a href="#" className="text-gray-700 hover:text-blue-600">About</a>
+            <a href="#" className="text-gray-700 hover:text-blue-600">Past Orders</a>
             <a href="#" className="text-gray-700 hover:text-blue-600">Services</a>
             <a href="#" className="text-gray-700 hover:text-blue-600">Contact</a>
           </div>
