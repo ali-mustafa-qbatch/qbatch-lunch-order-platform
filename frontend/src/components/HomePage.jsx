@@ -1,10 +1,12 @@
 import Carousel from "./Carousel";
 import { useState } from "react";
 import OrderModal from "./OrderModal";
+import SearchBar from "./SearchBar";
 
 function HomePage() {
   const [isOrderDialogOpen, setOrderDialog] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const restaurants = [
     {
@@ -33,6 +35,11 @@ function HomePage() {
     setOrderDialog(true);
   };
 
+  // Filter restaurants based on search query
+  const filteredRestaurants = restaurants.filter(restaurant =>
+    restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="min-h-screen bg-gray-100">
       <section className="bg-white shadow-md py-16 px-6 text-center">
@@ -42,8 +49,11 @@ function HomePage() {
 
       <section className="py-12 px-6 max-w-4xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6 text-gray-800 text-center">Restaurants</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {restaurants.map((restaurant) => (
+
+        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
+          {filteredRestaurants.map((restaurant) => (
             <div key={restaurant.id} className="bg-white rounded-lg shadow border border-gray-200">
               <Carousel images={restaurant.menu} />
               <div className="p-5">
