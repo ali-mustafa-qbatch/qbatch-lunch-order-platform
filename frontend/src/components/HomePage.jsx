@@ -1,4 +1,4 @@
-import Carousel from "./carousel";
+import Carousel from "./Carousel";
 
 function HomePage() {
   const restaurants = [
