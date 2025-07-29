@@ -1,7 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
+function OrderModal({ isOpen, onClose, onSubmit, restaurantName, order = null }) {
     const [inputFields, setInputFields] = useState([{ value: '' }]);
+    const [formData, setFormData] = useState({
+        name: '',
+        items: [],
+        instructions: '',
+        restaurantName: restaurantName
+    });
 
     const handleAddFields = () => {
         setInputFields([...inputFields, { value: '' }]);
@@ -9,15 +15,9 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
 
     const handleRemoveFields = (index) => {
         const list = [...inputFields];
-        list.splice(index, 1); 
+        list.splice(index, 1);
         setInputFields(list);
     };
-
-    const [formData, setFormData] = useState({
-        name: '',
-        items: [],
-        instructions: ''
-    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -28,7 +28,7 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
         e.preventDefault();
         formData.items = [...inputFields];
         onSubmit(formData);
-        setFormData({ name: '', items: [], instructions: '' }); 
+        setFormData({ name: '', items: [], instructions: '', restaurantName: restaurantName });
         onClose();
     };
 
@@ -38,6 +38,18 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
         list[index].value = value;
         setInputFields(list);
     };
+
+    useEffect(() => {
+        if (isOpen) {
+            setInputFields(order?.items ? [...order.items] : [{ value: '' }]);
+            setFormData({
+                name: order?.name || '',
+                items: order?.items ? [...order.items] : [],
+                instructions: order?.instructions || '',
+                restaurantName: order?.restaurantName || restaurantName,
+            });
+        }
+    }, [isOpen, order]);
 
     if (!isOpen) {
         return null;
@@ -49,7 +61,7 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
                 <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                            Order Details ({restaurantName})
+                            Order Details ({order?.restaurantName || restaurantName})
                         </h3>
                         <button type="button" onClick={onClose} className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" >
                             <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14" >
@@ -73,11 +85,11 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
                                 {inputFields.map((field, index) => (
                                     <div key={index} className='flex my-2'>
                                         <input type="text" value={field.value} onChange={(e) => handleInputFieldChange(e, index)} placeholder={"item " + (index + 1)} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' required />
-                                        {inputFields.length > 1 && ( 
+                                        {inputFields.length > 1 && (
                                             <button className="font-bold py-2 px-4 rounded inline-flex items-center" onClick={() => handleRemoveFields(index)}>
-                                                <svg class="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                                                    <path fill-rule="evenodd" d="M9 2a1 1 0 00-1 1v1H3a1 1 0 000 2h1v10a2 2 0 002 2h8a2 2 0 002-2V6h1a1 1 0 100-2h-5V3a1 1 0 00-1-1h-2zm3 4H8v9h4V6z" clip-rule="evenodd"/>
+                                                <svg className="fill-current w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                                    <path fillRule="evenodd" d="M9 2a1 1 0 00-1 1v1H3a1 1 0 000 2h1v10a2 2 0 002 2h8a2 2 0 002-2V6h1a1 1 0 100-2h-5V3a1 1 0 00-1-1h-2zm3 4H8v9h4V6z" clipRule="evenodd" />
                                                 </svg>
                                             </button>
                                         )}
@@ -97,7 +109,7 @@ function OrderModal({ isOpen, onClose, onSubmit, restaurantName }) {
                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" >
                                 <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
                             </svg>
-                            Confirm Order
+                            {order ? "Edit Order" : "Confirm Order"}
                         </button>
                     </form>
                 </div>
