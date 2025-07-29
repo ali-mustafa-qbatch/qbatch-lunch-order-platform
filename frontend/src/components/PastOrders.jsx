@@ -14,7 +14,7 @@ function PastOrders() {
         {
             id: 1,
             name: "Muhammad Ali Mustafa",
-            bill: 500,
+            bill: -1,
             timestamp: 1753765042319,
             isEditable: true,
             items: [
@@ -24,7 +24,9 @@ function PastOrders() {
                 {
                     value: "Dahi BHallay"
                 }
-            ]
+            ],
+            instructions: "",
+            restaurantName: "Butt Biryani"
         },
         {
             id: 2,
@@ -39,7 +41,9 @@ function PastOrders() {
                 {
                     value: "Dahi BHallay"
                 }
-            ]
+            ],
+            instructions: "",
+            restaurantName: "Chacha Samosa"
         },
         {
             id: 3,
@@ -54,7 +58,9 @@ function PastOrders() {
                 {
                     value: "Dahi BHallay"
                 }
-            ]
+            ],
+            instructions: "",
+            restaurantName: "Hazara Hotel"
         },
         {
             id: 4,
@@ -69,7 +75,9 @@ function PastOrders() {
                 {
                     value: "Dahi BHallay"
                 }
-            ]
+            ],
+            instructions: "",
+            restaurantName: "Butt Biryani"
         },
         {
             id: 5,
@@ -84,7 +92,9 @@ function PastOrders() {
                 {
                     value: "Dahi BHallay"
                 }
-            ]
+            ],
+            instructions: "",
+            restaurantName: "Butt Biryani"
         }
     ];
 
