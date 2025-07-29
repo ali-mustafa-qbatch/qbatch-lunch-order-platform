@@ -16,9 +16,10 @@ const Navbar = () => {
 					</div>
 
 					<div className="hidden md:flex space-x-6">
-						<a href="" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
+						<a href="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
 						<a href="#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-						<a href="#" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Contact</a>
+						<a href="" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Contact</a>
+						<a href="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</a>
 					</div>
 
 					<div className="md:hidden">
@@ -37,7 +38,7 @@ const Navbar = () => {
 
 			<div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu" >
 				<div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b shadow-sm">
-					<a href="" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+					<a href="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Home
 					</a>
 					<a href="#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
@@ -45,6 +46,9 @@ const Navbar = () => {
 					</a>
 					<a href="" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Contact
+					</a>
+					<a href="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+						Sign In
 					</a>
 				</div>
 			</div>
