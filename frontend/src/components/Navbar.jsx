@@ -12,14 +12,16 @@ const Navbar = () => {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<div className="flex-shrink-0">
-						<img src="Qbatch_iddODzB85h_1.svg" alt="Qbatch Logo" className="h-8 w-auto" />
+						<a href="/">
+							<img src="Qbatch_iddODzB85h_1.svg" alt="Qbatch Logo" className="h-8 w-auto" />
+						</a>
 					</div>
 
 					<div className="hidden md:flex space-x-6">
 						<a href="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
 						<a href="#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-						<a href="" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Contact</a>
 						<a href="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</a>
+						<a href="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</a>
 					</div>
 
 					<div className="md:hidden">
@@ -44,12 +46,13 @@ const Navbar = () => {
 					<a href="#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Past Orders
 					</a>
-					<a href="" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-						Contact
-					</a>
 					<a href="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Sign In
 					</a>
+					<a href="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+						Get Started
+					</a>
+					
 				</div>
 			</div>
 		</nav>
