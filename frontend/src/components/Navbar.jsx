@@ -22,7 +22,8 @@ const Navbar = ({ user=null }) => {
 						{
 							user === 'Admin' ? (
 								<>
-									<Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
+									<Link to="/admin" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</Link>
+									<Link to="/admin/orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Orders</Link>
 								</>
 							) : (
 								<>
@@ -54,8 +55,11 @@ const Navbar = ({ user=null }) => {
 					{
 						user === 'Admin' ? (
 							<>
-								<Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-									Home
+								<Link to="/admin" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Dashboard
+								</Link>
+								<Link to="/admin/orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Orders
 								</Link>
 							</>
 						) : (

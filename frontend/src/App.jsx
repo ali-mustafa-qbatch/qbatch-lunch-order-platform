@@ -4,6 +4,7 @@ import AdminPage from "./components/AdminPage";
 import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import Orders from "./components/Orders";
 import Footer from "./components/Footer";
 
 function App() {
@@ -52,6 +53,18 @@ function App() {
 						<>
 							<Navbar user='Admin' />
 							<AdminPage />
+							<Footer />
+						</>
+					}
+				>
+					{" "}
+				</Route>
+				<Route
+					path="/admin/orders"
+					element={
+						<>
+							<Navbar user='Admin' />
+							<Orders />
 							<Footer />
 						</>
 					}
