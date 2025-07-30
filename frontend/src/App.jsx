@@ -1,18 +1,53 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import HomePage from "./components/HomePage"
+import Navbar from "./components/Navbar";
+import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import Footer from "./components/Footer";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<HomePage />}> </Route>
-				<Route path="/sign-in" element={<SignIn />}> </Route>
-				<Route path="/sign-up" element={<SignUp />}> </Route>
+				<Route
+					path="/"
+					element={
+						<>
+							<Navbar />
+							<HomePage />
+							<Footer />
+						</>
+					}
+				>
+					{" "}
+				</Route>
+				<Route
+					path="/sign-in"
+					element={
+						<>
+							<Navbar />
+							<SignIn />
+							<Footer />
+						</>
+					}
+				>
+					{" "}
+				</Route>
+				<Route
+					path="/sign-up"
+					element={
+						<>
+							<Navbar />
+							<SignUp />
+							<Footer />
+						</>
+					}
+				>
+					{" "}
+				</Route>
 			</Routes>
 		</BrowserRouter>
-	)
+	);
 }
 
-export default App
+export default App;
