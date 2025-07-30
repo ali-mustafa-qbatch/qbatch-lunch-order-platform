@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link  } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ user=null }) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleMenu = () => {
@@ -19,10 +19,20 @@ const Navbar = () => {
 					</div>
 
 					<div className="hidden md:flex space-x-6">
-						<Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
-						<a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-						<Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
-						<Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+						{
+							user === 'Admin' ? (
+								<>
+									<Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
+								</>
+							) : (
+								<>
+									<Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
+									<a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
+									<Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
+									<Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+								</>
+							)
+						}
 					</div>
 
 					<div className="md:hidden">
@@ -41,22 +51,33 @@ const Navbar = () => {
 
 			<div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu" >
 				<div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b shadow-sm">
-					<Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-						Home
-					</Link>
-					<a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-						Past Orders
-					</a>
-					<Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-						Sign In
-					</Link>
-					<Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-						Get Started
-					</Link>
-					
+					{
+						user === 'Admin' ? (
+							<>
+								<Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Home
+								</Link>
+							</>
+						) : (
+							<>
+								<Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Home
+								</Link>
+								<a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Past Orders
+								</a>
+								<Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Sign In
+								</Link>
+								<Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+									Get Started
+								</Link>
+							</>
+						)
+					}
 				</div>
 			</div>
-		</nav>
+		</nav >
 	);
 };
 

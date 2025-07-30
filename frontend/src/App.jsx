@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
+import AdminPage from "./components/AdminPage";
 import HomePage from "./components/HomePage";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
@@ -39,6 +40,18 @@ function App() {
 						<>
 							<Navbar />
 							<SignUp />
+							<Footer />
+						</>
+					}
+				>
+					{" "}
+				</Route>
+				<Route
+					path="/admin"
+					element={
+						<>
+							<Navbar user='Admin' />
+							<AdminPage />
 							<Footer />
 						</>
 					}
