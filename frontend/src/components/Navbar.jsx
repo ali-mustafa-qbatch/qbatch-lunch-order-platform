@@ -20,7 +20,7 @@ const Navbar = () => {
 
 					<div className="hidden md:flex space-x-6">
 						<Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
-						<Link to="#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</Link>
+						<a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
 						<Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
 						<Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
 					</div>
@@ -44,9 +44,9 @@ const Navbar = () => {
 					<Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Home
 					</Link>
-					<Link to="#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+					<a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Past Orders
-					</Link>
+					</a>
 					<Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
 						Sign In
 					</Link>
