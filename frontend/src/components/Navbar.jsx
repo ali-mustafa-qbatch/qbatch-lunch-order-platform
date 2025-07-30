@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/Qbatch_logo.svg'
 
 const Navbar = ({ user=null }) => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -13,8 +14,8 @@ const Navbar = ({ user=null }) => {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<div className="flex-shrink-0">
-						<Link to="/">
-							<img src="Qbatch_iddODzB85h_1.svg" alt="Qbatch Logo" className="h-8 w-auto" />
+						<Link to={user === 'Admin' ? "/admin" : "/"}>
+							<img src={logo} alt="Qbatch Logo" className="h-8 w-auto" />
 						</Link>
 					</div>
 
