@@ -1,6 +1,8 @@
+import Restaurants from "./Restaurants"
+
 function AdminPage() {
   return (
-    <div>AdminPage</div>
+    <Restaurants user={"Admin"} />
   )
 }
 
