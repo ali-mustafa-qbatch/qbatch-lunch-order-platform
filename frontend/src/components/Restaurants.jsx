@@ -4,6 +4,7 @@ import SearchBar from "./SearchBar";
 import Carousel from "./Carousel";
 
 function Restaurants({ user = null }) {
+	const [isOrderDialogOpen, setOrderDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
 
@@ -39,7 +40,7 @@ function Restaurants({ user = null }) {
     }
 
     const deleteSelectedRestaurant = () => {
-        
+
     }
 
     const filteredRestaurants = restaurants.filter(restaurant =>
