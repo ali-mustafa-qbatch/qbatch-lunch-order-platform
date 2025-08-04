@@ -7,7 +7,7 @@ function Orders() {
             name: "Muhammad Ali Mustafa",
             email: "ali.mustafa@qbatch.com",
             amount: 1000,
-            status: "Active",
+            status: "Delivered",
             timestamp: 1753765042319,
             image: 'ali.jpg'
         },
@@ -26,6 +26,17 @@ function Orders() {
         const date = new Date(timestamp);
         return date.toLocaleString();
     }
+
+    const getStatusBg = (status) => {
+        switch (status) {
+            case 'Active':
+                return 'bg-red-300';
+            case 'Delivered':
+                return 'bg-gray-300';
+            default:
+                return 'bg-green-300';
+        }
+    };
 
     return (
         <>
@@ -67,7 +78,7 @@ function Orders() {
                                     </p>
                                 </th>
                                 <th className="cursor-pointer border-y border-slate-900 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50">
-                                    <p className="antialiased font-sans text-sm text-slate-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">Actions</p>
+                                    <p className="antialiased font-sans text-sm text-slate-900 flex items-center justify-between gap-2 font-normal leading-none opacity-70">Items</p>
                                 </th>
                             </tr>
                         </thead>
@@ -97,11 +108,12 @@ function Orders() {
                                     </td>
                                     <td className="p-4 border-b border-slate-900">
                                         <div className="w-max">
-                                            <div className="relative grid items-center font-sans font-bold uppercase whitespace-nowrap select-none bg-green-500/20 text-green-600 py-1 px-2 text-xs rounded-md" style={{ opacity: 1 }}>
-                                                <select name="country-code" className="text-slate-900 text-sm px-2 py-3">
-                                                    <option className=''>{order.status}</option>
+                                            <div className={`relative grid items-center font-sans font-bold uppercase whitespace-nowrap ${getStatusBg(order.status)} px-2 text-xs rounded-md`}>
+                                                <select value={order.status} name="country-code" className="text-slate-700 text-sm px-2 py-3 text-center">
+                                                    <option className=''>Active</option>
+                                                    <option className=''>Delivered</option>
+                                                    <option className=''>Payment Received</option>
                                                 </select>
-                                                {/* <span className="">{order.status}</span> */}
                                             </div>
                                         </div>
                                     </td>
