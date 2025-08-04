@@ -1,0 +1,11 @@
+django-env/
+
+*.log
+local_settings.py
+db.sqlite3
+media/
+staticfiles/
+
+__pycache__/
+*.py[cod]
+*$py.class
