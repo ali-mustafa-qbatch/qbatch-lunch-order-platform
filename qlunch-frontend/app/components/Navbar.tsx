@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
 export const Navbar = ({ user=null }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isAuthenticated, setAuthenticated] = useState(false);
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('access_token');
+        token ? setAuthenticated(true) : setAuthenticated(false);
+    }, []);
+
+    const logout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        
+        setAuthenticated(false);
     };
 
     return (
@@ -29,8 +42,19 @@ export const Navbar = ({ user=null }) => {
                                 <>
                                     <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
                                     <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-                                    <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
-                                    <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+                                    {
+                                        isAuthenticated ? (
+                                            <>
+                                                <Link to="/profile" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">View Profile</Link>
+                                                <button onClick={logout} className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Logout</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
+                                                <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+                                            </>
+                                        )
+                                    }
                                 </>
                             )
                         }
@@ -70,12 +94,27 @@ export const Navbar = ({ user=null }) => {
                                 <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
                                     Past Orders
                                 </a>
-                                <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Sign In
-                                </Link>
-                                <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Get Started
-                                </Link>
+                                {
+                                    isAuthenticated ? (
+                                        <>
+                                            <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+                                                Profile
+                                            </Link>
+                                            <button onClick={logout} className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+                                                Logout
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+                                                Sign In
+                                            </Link>
+                                            <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+                                                Get Started
+                                            </Link>
+                                        </>
+                                    )
+                                }
                             </>
                         )
                     }
