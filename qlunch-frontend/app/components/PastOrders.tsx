@@ -1,107 +1,147 @@
 import { OrderDetailsModal } from "./OrderDetailsModal";
 import { useState } from "react";
+import { z } from "zod";
+import { useEffect } from "react";
+import axios from "axios";
+
+const pastOrdersSchema = z.object({
+    id: z.number(),
+    name: z.string().min(1, "Name is required"),
+    bill: z.number(),
+    timestamp: z.number(),
+    isEditable: z.boolean(),
+    items: z.array(
+        z.object({
+            value: z.string()
+        })
+    ),
+    instructions: z.string(),
+    restaurantName: z.string()
+});
+
+export const PastOrdersResponseSchema = z.array(pastOrdersSchema);
+export type PastOrders = z.infer<typeof pastOrdersSchema>;
+
+const fallbackPastOrders: PastOrders[] = [
+    {
+        id: 1,
+        name: "Muhammad Ali Mustafa",
+        bill: -1,
+        timestamp: 1753765042319,
+        isEditable: true,
+        items: [
+            {
+                value: "Biryani",
+            },
+            {
+                value: "Dahi BHallay"
+            }
+        ],
+        instructions: "",
+        restaurantName: "Butt Biryani"
+    },
+    {
+        id: 2,
+        name: "Muhammad Ali Mustafa",
+        bill: 500,
+        timestamp: 1753708239334,
+        isEditable: false,
+        items: [
+            {
+                value: "Biryani",
+            },
+            {
+                value: "Dahi BHallay"
+            }
+        ],
+        instructions: "",
+        restaurantName: "Chacha Samosa"
+    },
+    {
+        id: 3,
+        name: "Muhammad Ali Mustafa",
+        bill: 500,
+        timestamp: 1753708239334,
+        isEditable: false,
+        items: [
+            {
+                value: "Biryani",
+            },
+            {
+                value: "Dahi BHallay"
+            }
+        ],
+        instructions: "",
+        restaurantName: "Hazara Hotel"
+    },
+    {
+        id: 4,
+        name: "Muhammad Ali Mustafa",
+        bill: 500,
+        timestamp: 1753708239334,
+        isEditable: false,
+        items: [
+            {
+                value: "Biryani",
+            },
+            {
+                value: "Dahi BHallay"
+            }
+        ],
+        instructions: "",
+        restaurantName: "Butt Biryani"
+    },
+    {
+        id: 5,
+        name: "Muhammad Ali Mustafa",
+        bill: 500,
+        timestamp: 1753708239334,
+        isEditable: false,
+        items: [
+            {
+                value: "Biryani",
+            },
+            {
+                value: "Dahi BHallay"
+            }
+        ],
+        instructions: "",
+        restaurantName: "Butt Biryani"
+    }
+]
 
 export function PastOrders() {
+    const [pastOrders, setPastOrders] = useState<PastOrders[]>([]);
     const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);
 
-    const openOrderDetailsModal = (order) => {
+    const openOrderDetailsModal = (order: any) => {
         setSelectedOrder(order);
         setOrderDetailsModal(true);
     };
 
-    const orders = [
-        {
-            id: 1,
-            name: "Muhammad Ali Mustafa",
-            bill: -1,
-            timestamp: 1753765042319,
-            isEditable: true,
-            items: [
-                {
-                    value: "Biryani",
-                },
-                {
-                    value: "Dahi BHallay"
-                }
-            ],
-            instructions: "",
-            restaurantName: "Butt Biryani"
-        },
-        {
-            id: 2,
-            name: "Muhammad Ali Mustafa",
-            bill: 500,
-            timestamp: 1753708239334,
-            isEditable: false,
-            items: [
-                {
-                    value: "Biryani",
-                },
-                {
-                    value: "Dahi BHallay"
-                }
-            ],
-            instructions: "",
-            restaurantName: "Chacha Samosa"
-        },
-        {
-            id: 3,
-            name: "Muhammad Ali Mustafa",
-            bill: 500,
-            timestamp: 1753708239334,
-            isEditable: false,
-            items: [
-                {
-                    value: "Biryani",
-                },
-                {
-                    value: "Dahi BHallay"
-                }
-            ],
-            instructions: "",
-            restaurantName: "Hazara Hotel"
-        },
-        {
-            id: 4,
-            name: "Muhammad Ali Mustafa",
-            bill: 500,
-            timestamp: 1753708239334,
-            isEditable: false,
-            items: [
-                {
-                    value: "Biryani",
-                },
-                {
-                    value: "Dahi BHallay"
-                }
-            ],
-            instructions: "",
-            restaurantName: "Butt Biryani"
-        },
-        {
-            id: 5,
-            name: "Muhammad Ali Mustafa",
-            bill: 500,
-            timestamp: 1753708239334,
-            isEditable: false,
-            items: [
-                {
-                    value: "Biryani",
-                },
-                {
-                    value: "Dahi BHallay"
-                }
-            ],
-            instructions: "",
-            restaurantName: "Butt Biryani"
-        }
-    ];
-
-    const getReadableDateTime = (timestamp) => {
+    const getReadableDateTime = (timestamp: number) => {
         const date = new Date(timestamp);
         return date.toLocaleString();
     }
+
+    useEffect(() => {
+        const fetchPastOrders = async (): Promise<PastOrders[]> => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/past-orders`)
+                const validated = PastOrdersResponseSchema.parse(response.data);
+                return validated;
+            } catch (err) {
+                console.error("Failed to fetch past orders data. Loading fallback data...");
+                return fallbackPastOrders;
+            }
+        };
+        const loadPastOrders = async () => {
+            const data = await fetchPastOrders();
+            setPastOrders(data);
+        }
+        loadPastOrders()
+    }, []);
 
     return (
         <section className="pb-12 px-6 max-w-4xl mx-auto" id="past-orders">
@@ -134,7 +174,7 @@ export function PastOrders() {
                     </thead>
                     <tbody>
                         {
-                            orders.map((order) => (
+                            pastOrders.map((order) => (
                                 <tr key={order.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {order.id}
