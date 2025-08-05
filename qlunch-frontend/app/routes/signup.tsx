@@ -2,6 +2,8 @@ import type { Route } from "./+types/home";
 import { Navbar } from "~/components/Navbar";
 import { SignUpForm } from "~/components/SignUpForm";
 import { Footer } from "~/components/Footer";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,6 +13,21 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function signup() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        setIsAuthenticated(true);
+      }
+    }
+  }, []);
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} replace />
+  }
+
   return (
     <main>
       <Navbar />
