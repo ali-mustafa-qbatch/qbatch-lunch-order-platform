@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import authenticate
 from .serializers import RegisterSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['POST'])
 def register_user(request):
@@ -26,9 +27,15 @@ def login_user(request):
 
     user = authenticate(username=username, password=password)
     if user is not None:
+        refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+
         return Response({
             'username': user.username,
             'email': user.email,
+            'access_token': access_token,
+            'refresh_token': refresh_token,
         }, status=status.HTTP_200_OK)
 
     return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)

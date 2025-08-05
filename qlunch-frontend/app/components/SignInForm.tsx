@@ -35,7 +35,10 @@ export function SignInForm() {
                 headers: {
                     'Content-Type': 'application/json',
                 }
-            });
+            });    
+            localStorage.setItem('access_token', response.data.access_token);
+            localStorage.setItem('refresh_token', response.data.refresh_token);
+    
             alert("Logged in Successfully.");
             reset();
             navigate("/");
