@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from 'axios';
 
 const signInSchema = z.object({
-    email: z.string().email("Invalid email address"),
+    username: z.string().min(3, 'Username must have at least 3 characters'),
     password: z.string()
         .min(8, "Password should have at least 8 characters")
         .regex(
@@ -27,10 +28,21 @@ export function SignInForm() {
         setPasswordToggle(!passwordToggle);
     }
 
-    const onSubmit = (data: SignInFormInputs) => {
+    const onSubmit = async (data: SignInFormInputs) => {
         console.log(data);
-        reset();
-        navigate('/');
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            alert("Logged in Successfully.");
+            reset();
+            navigate("/");
+        } catch (err) {
+            console.error("Response: ", err);
+            alert("Authentication failed.");
+        }
     };
 
     return (
@@ -41,12 +53,12 @@ export function SignInForm() {
                         <h1 className="text-slate-900 text-center text-3xl font-semibold">Sign in</h1>
                         <form className="mt-12 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div>
-                                <label className="text-slate-900 text-sm font-medium mb-2 block">Email</label>
+                                <label className="text-slate-900 text-sm font-medium mb-2 block">Username</label>
                                 <input
-                                    {...register("email")}
-                                    type="text" className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.email ? 'border border-red-600' : 'border border-slate-300'}`} placeholder="Enter email"
+                                    {...register("username")}
+                                    type="text" className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.username ? 'border border-red-600' : 'border border-slate-300'}`} placeholder="Enter username"
                                 />
-                                {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
+                                {errors.username && <p className="text-red-600 text-sm mt-1">{errors.username.message}</p>}
                             </div>
 
                             <div>
