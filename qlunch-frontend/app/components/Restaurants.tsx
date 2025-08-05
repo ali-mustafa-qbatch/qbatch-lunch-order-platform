@@ -12,17 +12,17 @@ export function Restaurants({ user = null }) {
         {
             id: 1,
             name: "Butt Biryani",
-            menu: ['../../public/vite.svg', '../../public/vite.svg', '../../public/vite.svg'],
+            menu: ['vite.svg', 'vite.svg', 'vite.svg'],
         },
         {
             id: 2,
             name: "Hazara Hotel",
-            menu: ['../../public/vite.svg', '../../public/vite.svg', '../../public/vite.svg'],
+            menu: ['vite.svg', 'vite.svg', 'vite.svg'],
         },
         {
             id: 3,
             name: "Chacha Samosa",
-            menu: ['../../public/vite.svg', '../../public/vite.svg', '../../public/vite.svg'],
+            menu: ['vite.svg', 'vite.svg', 'vite.svg'],
         },
     ];
 
