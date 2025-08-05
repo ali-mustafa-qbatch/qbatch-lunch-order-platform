@@ -34,7 +34,7 @@ export function SignInForm() {
     };
 
     return (
-        <div className="bg-[#121d2d]">
+        <div className="bg-gray-100">
             <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
                 <div className="max-w-[480px] w-full">
                     <div className="p-6 sm:p-8 bg-white border border-gray-200 shadow-sm">
