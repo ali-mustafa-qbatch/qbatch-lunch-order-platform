@@ -20,6 +20,8 @@ export default function signup() {
       const token = localStorage.getItem('access_token');
       if (token) {
         setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
       }
     }
   }, []);
