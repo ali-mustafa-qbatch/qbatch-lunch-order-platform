@@ -6,7 +6,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 
 const signUpSchema = z.object({
-    name: z.string().min(1, "Full name is required"),
+    username: z
+        .string()
+        .min(3, 'Username must have at least 3 characters')
+        .regex(
+            /^[a-zA-Z0-9_-]+$/, 
+            "Username can only contain letters, numbers, underscores, and hyphens"
+        ),
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
     email: z
         .string()
         .regex(
@@ -21,15 +29,6 @@ const signUpSchema = z.object({
             "Password must include uppercase, lowercase, number, and special character"
         ),
     confirmPassword: z.string().min(8, "Confirm password is required"),
-    address: z
-        .string()
-        .optional()
-        .or(z.literal("").transform(() => undefined)),
-    countryCode: z.string().min(1, "Country code is required"),
-    phoneNumber: z
-        .string()
-        .length(10, "Phone number must be 10 digits")
-        .regex(/^[3-9]\d{9}$/, "Enter a valid phone number"),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
@@ -38,7 +37,7 @@ const signUpSchema = z.object({
 type SignUpFormInputs = z.infer<typeof signUpSchema>;
 
 export function SignUpForm() {
-    const { register, handleSubmit, setValue, reset, formState: { errors } } = useForm<SignUpFormInputs>({
+    const { register, handleSubmit, reset, formState: { errors } } = useForm<SignUpFormInputs>({
         resolver: zodResolver(signUpSchema),
     });
     const [passwordToggle, setPasswordToggle] = useState(false);
@@ -51,11 +50,6 @@ export function SignUpForm() {
 
     const handleConfirmPasswordToggle = () => {
         setConfirmPasswordToggle(!confirmPasswordToggle);
-    }
-
-    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/[^0-9]/g, "");
-        setValue(e.target.name, value);
     }
 
     const onSubmit = async (data: SignUpFormInputs) => {
@@ -87,16 +81,44 @@ export function SignUpForm() {
                         <form className="mt-12 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Full Name</label>
+                                    <label className="text-slate-900 text-sm font-medium mb-2 block">First Name</label>
                                     <input
-                                        {...register("name")}
+                                        {...register("firstName")}
                                         type="text"
-                                        placeholder="Enter full name"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.name ? "border border-red-600" : "border border-slate-300"
+                                        placeholder="Enter first name"
+                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.firstName ? "border border-red-600" : "border border-slate-300"
                                             }`}
                                     />
-                                    {errors.name && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>
+                                    {errors.firstName && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.firstName.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Last Name</label>
+                                    <input
+                                        {...register("lastName")}
+                                        type="text"
+                                        placeholder="Enter last name"
+                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.lastName ? "border border-red-600" : "border border-slate-300"
+                                            }`}
+                                    />
+                                    {errors.lastName && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.lastName.message}</p>
+                                    )}
+                                </div>
+
+                                <div>
+                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Username</label>
+                                    <input
+                                        {...register("username")}
+                                        type="text"
+                                        placeholder="Enter username"
+                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.username ? "border border-red-600" : "border border-slate-300"
+                                            }`}
+                                    />
+                                    {errors.username && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.username.message}</p>
                                     )}
                                 </div>
 
@@ -151,41 +173,6 @@ export function SignUpForm() {
                                         <p className="text-red-600 text-sm mt-1">
                                             {errors.confirmPassword.message}
                                         </p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Address (Optional)</label>
-                                    <input
-                                        {...register("address")}
-                                        type="text"
-                                        placeholder="123 Street, XYZ City"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.address ? "border border-red-600" : "border border-slate-300"}`}
-                                    />
-                                    {errors.address && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.address.message}</p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Phone Number</label>
-                                    <div className="flex gap-2 items-center">
-                                        <select
-                                            {...register("countryCode")}
-                                            className="text-slate-900 text-sm border border-slate-300 px-2 py-3 bg-white"
-                                        >
-                                            <option value="+92">🇵🇰 +92</option>
-                                        </select>
-                                        <input
-                                            {...register("phoneNumber")}
-                                            type="text"
-                                            onChange={handleFieldChange}
-                                            placeholder="3000000000"
-                                            className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.phoneNumber ? "border border-red-600" : "border border-slate-300"}`}
-                                        />
-                                    </div>
-                                    {errors.phoneNumber && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.phoneNumber.message}</p>
                                     )}
                                 </div>
                             </div>
