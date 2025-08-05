@@ -42,8 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'orders',
     'rest_framework',
+    'orders',
+    'restaurants',
 ]
 
 MIDDLEWARE = [
@@ -78,11 +79,6 @@ WSGI_APPLICATION = 'QLunch.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-MONGO_DB = {
-    'URI': os.getenv('MONGO_URI'),
-    'DB_NAME': os.getenv('MONGO_DB')
-}
 
 DATABASES = {
     'default': {
