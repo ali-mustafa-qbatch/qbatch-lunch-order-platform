@@ -1,12 +1,18 @@
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 const signUpSchema = z.object({
     name: z.string().min(1, "Full name is required"),
-    email: z.string().email("Invalid email address"),
+    email: z
+        .string()
+        .regex(
+            /^[a-zA-Z0-9._%+-]+@qbatch\.com$/,
+            "Invalid email address"
+        ),
     password: z
         .string()
         .min(8, "Password should have at least 8 characters")
@@ -15,22 +21,15 @@ const signUpSchema = z.object({
             "Password must include uppercase, lowercase, number, and special character"
         ),
     confirmPassword: z.string().min(8, "Confirm password is required"),
-    address: z.string().min(1, "Address is required"),
+    address: z
+        .string()
+        .optional()
+        .or(z.literal("").transform(() => undefined)),
     countryCode: z.string().min(1, "Country code is required"),
     phoneNumber: z
         .string()
         .length(10, "Phone number must be 10 digits")
         .regex(/^[3-9]\d{9}$/, "Enter a valid phone number"),
-    website: z
-        .string()
-        .optional()
-        .or(z.literal("").transform(() => undefined))
-        .refine(
-            (url) => !url || /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z0-9]{2,}(\/[^\s]*)?$/.test(url), "Enter a valid website URL"
-        ),
-    zipCode: z
-        .string()
-        .length(5, "Zip Code must be exactly 5 digits"),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
@@ -54,20 +53,27 @@ export function SignUpForm() {
         setConfirmPasswordToggle(!confirmPasswordToggle);
     }
 
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/[^0-9]/g, "");
-        setValue("phoneNumber", value);
-    };
+        setValue(e.target.name, value);
+    }
 
-    const handleZipCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.replace(/[^0-9]/g, "");
-        setValue("zipCode", value);
-    };
-
-    const onSubmit = (data: SignUpFormInputs) => {
+    const onSubmit = async (data: SignUpFormInputs) => {
         console.log(data);
-        reset();
-        navigate("/sign-in");
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users`, data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            console.log("Response: ", response.data);
+            alert("Registration Successfully.");
+            reset();
+            navigate("/sign-in");
+        } catch (err) {
+            console.error("Response: ", err);
+            alert("Registration failed.");
+        }
     };
 
     return (
@@ -99,7 +105,7 @@ export function SignUpForm() {
                                     <input
                                         {...register("email")}
                                         type="email"
-                                        placeholder="ali@example.com"
+                                        placeholder="ali.mustafa@qbatch.com"
                                         className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.email ? "border border-red-600" : "border border-slate-300"
                                             }`}
                                     />
@@ -149,7 +155,7 @@ export function SignUpForm() {
                                 </div>
 
                                 <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Address</label>
+                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Address (Optional)</label>
                                     <input
                                         {...register("address")}
                                         type="text"
@@ -173,40 +179,13 @@ export function SignUpForm() {
                                         <input
                                             {...register("phoneNumber")}
                                             type="text"
-                                            onChange={handlePhoneChange}
+                                            onChange={handleFieldChange}
                                             placeholder="3000000000"
                                             className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.phoneNumber ? "border border-red-600" : "border border-slate-300"}`}
                                         />
                                     </div>
                                     {errors.phoneNumber && (
                                         <p className="text-red-600 text-sm mt-1">{errors.phoneNumber.message}</p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Website (Optional)</label>
-                                    <input
-                                        {...register("website")}
-                                        type="text"
-                                        placeholder="https://www.example.com"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.website ? "border border-red-600" : "border border-slate-300"}`}
-                                    />
-                                    {errors.website && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.website.message}</p>
-                                    )}
-                                </div>
-
-                                <div>
-                                    <label className="text-slate-900 text-sm font-medium mb-2 block">Zip Code</label>
-                                    <input
-                                        {...register("zipCode")}
-                                        type="text"
-                                        onChange={handleZipCodeChange}
-                                        placeholder="12345"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.zipCode ? "border border-red-600" : "border border-slate-300"}`}
-                                    />
-                                    {errors.zipCode && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.zipCode.message}</p>
                                     )}
                                 </div>
                             </div>

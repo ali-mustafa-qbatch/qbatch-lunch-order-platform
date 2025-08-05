@@ -5,7 +5,7 @@ import { Footer } from "~/components/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Sign Up Page" },
+    { title: "Sign Up" },
     { name: "description", content: "Welcome to sign up page!" },
   ];
 }
