@@ -100,7 +100,7 @@ export const Navbar = ({ user=null }) => {
                                             <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
                                                 Profile
                                             </Link>
-                                            <button onClick={logout} className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
+                                            <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => {setIsOpen(false); logout()}} >
                                                 Logout
                                             </button>
                                         </>
