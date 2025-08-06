@@ -7,7 +7,7 @@ urlpatterns = [
     path("token/refresh", views.refresh_token, name="refresh_token"),
     path("logout", views.logout_user, name="logout"),
     path("profile", views.get_user_profile, name="profile"),
-    # path("profile/update", views.update_user_profile, name="update_profile"),
-    # path("profile/change-password", views.change_user_password, name="change_password"),
-    # path("profile/delete", views.delete_user_account, name="delete_account"),
+    path("profile/update", views.update_user_profile, name="update_profile"),
+    path("profile/change-password", views.change_user_password, name="change_password"),
+    path("profile/delete", views.delete_user_account, name="delete_account"),
 ]

@@ -29,3 +29,8 @@ class RegisterSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         return user
+    
+    def update(self, instance, validated_data):
+        validated_data.pop('password', None)
+        validated_data.pop('confirm_password', None)
+        return super().update(instance, validated_data)

@@ -70,3 +70,38 @@ def get_user_profile(request):
         'date_joined': user.date_joined,
     }
     return Response(profile_data, status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user_profile(request):
+    user = request.user
+
+    serializer = RegisterSerializer(user, data=request.data, partial=True)
+    
+    if serializer.is_valid():
+        serializer.save()
+        return Response({"message": "Profile updated successfully."}, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def change_user_password(request):
+    user = request.user
+    new_password = request.data.get('new_password')
+    confirm_password = request.data.get('confirm_password')
+
+    if new_password != confirm_password:
+        return Response({"detail": "Passwords do not match."}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.set_password(new_password)
+    user.save()
+    
+    return Response({"message": "Password changed successfully."}, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user_account(request):
+    user = request.user
+    user.delete()
+    return Response({"message": "User account deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
