@@ -49,20 +49,15 @@ def refresh_token(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
-    if request.user.is_authenticated:
-        try:
-            refresh_token = request.data.get('refresh_token')
-            token = RefreshToken(refresh_token)
-            token.blacklist()
-            return Response({"message": "User logged out successfully."}, status=status.HTTP_205_RESET_CONTENT)
-        except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response({"status": "Not Authenticated"}, status=401)
+    try:
+        refresh_token = request.data.get('refresh_token')
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response({"message": "User logged out successfully."}, status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_profile(request):
-    if request.user.is_authenticated:
-        return Response({"status": "Authenticated"})
-    return Response({"status": "Not Authenticated"}, status=401)
+    return Response({"status": "Authenticated"})
