@@ -25,19 +25,15 @@ class RestaurantSerializer(serializers.ModelSerializer):
             MenuImage.objects.create(restaurant=restaurant, image=image_file)
         return restaurant
     
-    # def update(self, instance, validated_data):
-    #     menu_images_data = validated_data.pop('menu_images', [])
-    #     instance.name = validated_data.get('name', instance.name)
-    #     instance.save()
+    def update(self, instance, validated_data):
+        uploaded_images = validated_data.pop("uploaded_images", None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
 
-    #     for image_data in menu_images_data:
-    #         image_id = image_data.get('id')
-    #         if image_id:
-    #             image_instance = MenuImage.objects.get(id=image_id, restaurant=instance)
-    #             for attr, value in image_data.items():
-    #                 setattr(image_instance, attr, value)
-    #             image_instance.save()
-    #         else:
-    #             MenuImage.objects.create(restaurant=instance, **image_data)
-
-    #     return instance
+        if uploaded_images is not None:
+            for image in instance.menu_images.all():
+                image.delete()
+            for image_file in uploaded_images:
+                MenuImage.objects.create(restaurant=instance, image=image_file)
+        return instance
