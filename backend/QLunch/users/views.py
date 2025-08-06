@@ -60,4 +60,13 @@ def logout_user(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_profile(request):
-    return Response({"status": "Authenticated"})
+    user = request.user
+    print(request.user.__dict__)
+    profile_data = {
+        'username': user.username,
+        'first_name': user.first_name,
+        'last_name': user.last_name,
+        'email': user.email,
+        'date_joined': user.date_joined,
+    }
+    return Response(profile_data, status=status.HTTP_200_OK)
