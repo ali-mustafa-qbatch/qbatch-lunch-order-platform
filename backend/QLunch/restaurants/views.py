@@ -16,7 +16,7 @@ def get_restaurants(request):
 def create_restaurant(request):
     if not request.user.is_staff:
         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
-    print(request.data)
+
     serializer = RestaurantSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -39,3 +39,25 @@ def delete_restaurant(request):
         return Response({"detail": "Restaurant deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     except Restaurant.DoesNotExist:
         return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_restaurant(request):
+    if not request.user.is_staff:
+        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+    
+    restaurant_id = request.data.get('id')
+    if not restaurant_id:
+        return Response({"detail": "Restaurant ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        restaurant = Restaurant.objects.get(id=restaurant_id)
+    except Restaurant.DoesNotExist:
+        return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    serializer = RestaurantSerializer(restaurant, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

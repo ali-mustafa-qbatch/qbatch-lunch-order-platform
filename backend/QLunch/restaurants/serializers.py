@@ -5,22 +5,23 @@ from .models import MenuImage
 class MenuImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MenuImage
-        fields = ('__all__')
+        fields = "__all__"
 
 class RestaurantSerializer(serializers.ModelSerializer):
     menu_images = MenuImageSerializer(many=True, read_only=True)
-    menu_images_upload = serializers.ListField(
-        child=serializers.ImageField(), write_only=True, source='menu_images'
-    )
+    uploaded_images = serializers.ListField(
+        child=serializers.ImageField(allow_empty_file=False, use_url=False),
+        write_only=True
+    ) 
 
     class Meta:
         model = Restaurant
-        fields = ('__all__')
+        fields = ['id', 'name', 'date_created', 'date_updated', 'menu_images', 'uploaded_images']
     
     def create(self, validated_data):
-        menu_images_data = validated_data.pop('menu_images', [])
+        uploaded_images = validated_data.pop("uploaded_images")
         restaurant = Restaurant.objects.create(**validated_data)
-        for image_file in menu_images_data:
+        for image_file in uploaded_images:
             MenuImage.objects.create(restaurant=restaurant, image=image_file)
         return restaurant
     
