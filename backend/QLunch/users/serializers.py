@@ -13,6 +13,10 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if attrs['password'] != attrs['confirm_password']:
             raise serializers.ValidationError({"password": "Passwords do not match."})
+        if attrs['email'] and User.objects.filter(email=attrs['email']).exists():
+            raise serializers.ValidationError({"email": "Email is already in use."})
+        if attrs['email'] and not attrs['email'].endswith('@qbatch.com'):
+            raise serializers.ValidationError({"email": "Email must be from the domain qbatch.com."})
         return attrs
 
     def create(self, validated_data):

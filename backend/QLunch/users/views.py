@@ -7,14 +7,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 @api_view(['POST'])
 def register_user(request):
-    serializer = RegisterSerializer(data={
-        'username': request.data['username'],
-        'first_name': request.data['firstName'],
-        'last_name': request.data['lastName'],
-        'email': request.data['email'], 
-        'password': request.data['password'], 
-        'confirm_password': request.data['confirmPassword']
-    })
+    serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response({"message": "User registered successfully."}, status=status.HTTP_201_CREATED)
@@ -38,3 +31,13 @@ def login_user(request):
         }, status=status.HTTP_200_OK)
 
     return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def logout_user(request):
+    try:
+        refresh_token = request.data.get('refresh_token')
+        token = RefreshToken(refresh_token)
+        token.blacklist()
+        return Response({"message": "User logged out successfully."}, status=status.HTTP_205_RESET_CONTENT)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
