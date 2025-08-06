@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
+import { useAuth } from '../context/AuthContext.js';
 
-export const Navbar = ({ user=null }) => {
+export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [isAuthenticated, setAuthenticated] = useState(false);
+    const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+    const { isAuthenticated, user, logout: authLogout } = useAuth();
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    useEffect(() => {
-        const token = localStorage.getItem('access_token');
-        token ? setAuthenticated(true) : setAuthenticated(false);
-    }, []);
-
     const logout = () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        
-        setAuthenticated(false);
+        authLogout();
     };
 
     return (
@@ -31,38 +25,78 @@ export const Navbar = ({ user=null }) => {
                         </Link>
                     </div>
 
-                    <div className="hidden md:flex space-x-6">
-                        {
-                            user === 'Admin' ? (
-                                <>
-                                    <Link to="/admin" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</Link>
-                                    <Link to="/admin/orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Orders</Link>
-                                </>
-                            ) : (
-                                <>
-                                    <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
-                                    <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-                                    {
-                                        isAuthenticated ? (
-                                            <>
-                                                <Link to="/profile" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">View Profile</Link>
-                                                <button onClick={logout} className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Logout</button>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
-                                                <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
-                                            </>
-                                        )
-                                    }
-                                </>
-                            )
-                        }
+                    <div className="hidden md:flex items-center space-x-6">
+                        {user === 'Admin' ? (
+                            <>
+                                <Link to="/admin" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</Link>
+                                <Link to="/admin/orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Orders</Link>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
+                                <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
+                                {isAuthenticated ? (
+                                    <div className="relative">
+                                        <button
+                                            onClick={() => setProfileMenuOpen(prev => !prev)}
+                                            className="flex items-center space-x-2 focus:outline-none"
+                                        >
+                                            <img
+                                                src="/profile-icon.svg" 
+                                                alt="Profile"
+                                                className="w-8 h-8 rounded-full"
+                                            />
+                                            <span className="text-gray-700 font-medium">{user?.username}</span>
+                                        </button>
+
+                                        {isProfileMenuOpen && (
+                                            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
+                                                <Link
+                                                    to="/profile"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                    onClick={() => setProfileMenuOpen(false)}
+                                                >
+                                                    View Profile
+                                                </Link>
+                                                <button
+                                                    onClick={() => {
+                                                        logout();
+                                                        setProfileMenuOpen(false);
+                                                    }}
+                                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                >
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <>
+                                        <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
+                                        <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+                                    </>
+                                )}
+                            </>
+                        )}
                     </div>
 
                     <div className="md:hidden">
-                        <button type="button" onClick={toggleMenu} className="text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-controls="mobile-menu" aria-expanded={isOpen} aria-label="Toggle navigation menu" >
-                            <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" >
+                        <button
+                            type="button"
+                            onClick={toggleMenu}
+                            className="text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            aria-controls="mobile-menu"
+                            aria-expanded={isOpen}
+                            aria-label="Toggle navigation menu"
+                        >
+                            <svg
+                                className="h-6 w-6"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                aria-hidden="true"
+                            >
                                 {isOpen ? (
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                 ) : (
@@ -74,52 +108,48 @@ export const Navbar = ({ user=null }) => {
                 </div>
             </div>
 
-            <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu" >
+            <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b shadow-sm">
-                    {
-                        user === 'Admin' ? (
-                            <>
-                                <Link to="/admin" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Dashboard
-                                </Link>
-                                <Link to="/admin/orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Orders
-                                </Link>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Home
-                                </Link>
-                                <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                    Past Orders
-                                </a>
-                                {
-                                    isAuthenticated ? (
-                                        <>
-                                            <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                                Profile
-                                            </Link>
-                                            <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => {setIsOpen(false); logout()}} >
-                                                Logout
-                                            </button>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                                Sign In
-                                            </Link>
-                                            <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)} >
-                                                Get Started
-                                            </Link>
-                                        </>
-                                    )
-                                }
-                            </>
-                        )
-                    }
+                    {user === 'Admin' ? (
+                        <>
+                            <Link to="/admin" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Dashboard
+                            </Link>
+                            <Link to="/admin/orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Orders
+                            </Link>
+                        </>
+                    ) : (
+                        <>
+                            <Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Home
+                            </Link>
+                            <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Past Orders
+                            </a>
+                            {isAuthenticated ? (
+                                <>
+                                    <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                        View Profile
+                                    </Link>
+                                    <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                        Sign In
+                                    </Link>
+                                    <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                        Get Started
+                                    </Link>
+                                </>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
-        </nav >
+        </nav>
     );
 };

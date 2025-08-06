@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const signInSchema = z.object({
     username: z.string().min(3, 'Username must have at least 3 characters'),
@@ -28,6 +29,8 @@ export function SignInForm() {
         setPasswordToggle(!passwordToggle);
     }
 
+    const { login } = useAuth();
+    
     const onSubmit = async (data: SignInFormInputs) => {
         console.log(data);
         try {
@@ -36,9 +39,11 @@ export function SignInForm() {
                     'Content-Type': 'application/json',
                 }
             });    
-            localStorage.setItem('access_token', response.data.access_token);
-            localStorage.setItem('refresh_token', response.data.refresh_token);
-            localStorage.setItem('username', response.data.username);
+            
+            login(response.data.username, {
+                access_token: response.data.access_token,
+                refresh_token: response.data.refresh_token
+            });
     
             alert("Logged in Successfully.");
             reset();

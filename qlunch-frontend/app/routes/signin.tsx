@@ -4,6 +4,7 @@ import { SignInForm } from "~/components/SignInForm";
 import { Footer } from "~/components/Footer";
 import { Navigate } from "react-router";
 import { useEffect, useState } from "react";
+import { AuthProvider } from "../context/AuthContext";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -31,10 +32,12 @@ export default function signin() {
   }
 
   return (
-    <main>
-      <Navbar />
-      <SignInForm />
-      <Footer />
-    </main>
+    <AuthProvider>
+      <main>
+        <Navbar />
+        <SignInForm />
+        <Footer />
+      </main>
+    </AuthProvider>
   );
 }

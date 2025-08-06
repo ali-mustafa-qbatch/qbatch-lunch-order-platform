@@ -1,28 +1,69 @@
-// import React, { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from 'react';
+import type { AuthState, AuthContextType } from '../types/global';
 
-// export const AuthContext = createContext<{
-//     isAuthenticated: boolean;
-//     logout: () => void;
-// } | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// export const AuthProvider : React.FC<{ children: React.ReactNode }> = ({children}) => {
-//     const [isAuthenticated, setAuthenticated] = useState(false);
+const initialState: AuthState = {
+    isAuthenticated: false,
+    user: null,
+    loading: true,
+};
 
-//     useEffect(() => {
-//         const token = localStorage.getItem('access-token');
-//         token ? setAuthenticated(true) : setAuthenticated(false);
-//     }, []);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [state, setState] = useState<AuthState>(initialState);
 
-//     const logout = () => {
-//         localStorage.removeItem('access_token');
-//         localStorage.removeItem('refresh_token');
-        
-//         setAuthenticated(false);
-//     };
+    useEffect(() => {
+        const token = localStorage.getItem('access_token');
+        const username = localStorage.getItem('username');
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-//     return (
-//         <AuthContext.Provider value={{isAuthenticated, logout}}>
-//             {children}
-//         </AuthContext.Provider>
-//     );
-// }
+        if (token && username) {
+            setState({
+                isAuthenticated: true,
+                user: { username, isAdmin },
+                loading: false,
+            });
+        } else {
+            setState({ ...initialState, loading: false });
+        }
+    }, []);
+
+    const login = (username: string, tokens: { access_token: string; refresh_token: string }) => {
+        localStorage.setItem('access_token', tokens.access_token);
+        localStorage.setItem('refresh_token', tokens.refresh_token);
+        localStorage.setItem('username', username);
+
+        setState({
+            isAuthenticated: true,
+            user: { username, isAdmin: false },
+            loading: false,
+        });
+    };
+
+    const logout = () => {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('username');
+        localStorage.removeItem('isAdmin');
+
+        setState({
+            isAuthenticated: false,
+            user: null,
+            loading: false,
+        });
+    };
+
+    return (
+        <AuthContext.Provider value={{ ...state, login, logout }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export function useAuth() {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
+}

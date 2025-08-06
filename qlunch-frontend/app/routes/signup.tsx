@@ -4,6 +4,7 @@ import { SignUpForm } from "~/components/SignUpForm";
 import { Footer } from "~/components/Footer";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
+import { AuthProvider } from "../context/AuthContext";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -31,10 +32,12 @@ export default function signup() {
   }
 
   return (
-    <main>
-      <Navbar />
-      <SignUpForm />
-      <Footer />
-    </main>
+    <AuthProvider>
+      <main>
+        <Navbar />
+        <SignUpForm />
+        <Footer />
+      </main>
+    </AuthProvider>
   );
 }
