@@ -44,8 +44,6 @@ export function SignInForm() {
                 access_token: response.data.access_token,
                 refresh_token: response.data.refresh_token
             });
-    
-            alert("Logged in Successfully.");
             reset();
             navigate("/");
         } catch (err) {
