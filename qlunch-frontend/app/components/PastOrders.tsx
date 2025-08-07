@@ -5,89 +5,18 @@ import axios from "axios";
 
 const pastOrderSchema = z.object({
     id: z.number(),
-    name: z.string().min(1, "Name is required"),
-    bill: z.number(),
-    timestamp: z.number(),
-    isEditable: z.boolean(),
-    items: z.array(
-        z.object({
-            value: z.string()
-        })
-    ),
+    items: z.array(z.object({ value: z.string() })),
+    total_price: z.number(),
+    status: z.string(),
     instructions: z.string(),
-    restaurantName: z.string()
+    date_created: z.string(),
+    date_updated: z.string(),
+    restaurant: z.string(),
+    customer: z.string(),
 });
 
 export const PastOrdersResponseSchema = z.array(pastOrderSchema);
 export type PastOrder = z.infer<typeof pastOrderSchema>;
-
-const fallbackPastOrders: PastOrder[] = [
-    {
-        id: 1,
-        name: "Muhammad Ali Mustafa",
-        bill: -1,
-        timestamp: 1753765042319,
-        isEditable: true,
-        items: [
-            { value: "Biryani" },
-            { value: "Dahi BHallay" }
-        ],
-        instructions: "",
-        restaurantName: "Butt Biryani"
-    },
-    {
-        id: 2,
-        name: "Muhammad Ali Mustafa",
-        bill: 500,
-        timestamp: 1753708239334,
-        isEditable: false,
-        items: [
-            { value: "Biryani" },
-            { value: "Dahi BHallay" }
-        ],
-        instructions: "",
-        restaurantName: "Chacha Samosa"
-    },
-    {
-        id: 3,
-        name: "Muhammad Ali Mustafa",
-        bill: 500,
-        timestamp: 1753708239334,
-        isEditable: false,
-        items: [
-            { value: "Biryani" },
-            { value: "Dahi BHallay" }
-        ],
-        instructions: "",
-        restaurantName: "Hazara Hotel"
-    },
-    {
-        id: 4,
-        name: "Muhammad Ali Mustafa",
-        bill: 500,
-        timestamp: 1753708239334,
-        isEditable: false,
-        items: [
-            { value: "Biryani" },
-            { value: "Dahi BHallay" }
-        ],
-        instructions: "",
-        restaurantName: "Butt Biryani"
-    },
-    {
-        id: 5,
-        name: "Muhammad Ali Mustafa",
-        bill: 500,
-        timestamp: 1753708239334,
-        isEditable: false,
-        items: [
-            { value: "Biryani" },
-            { value: "Dahi BHallay" }
-        ],
-        instructions: "",
-        restaurantName: "Butt Biryani"
-    }
-];
 
 export function PastOrders() {
     const [pastOrders, setPastOrders] = useState<PastOrder[]>([]);
@@ -99,19 +28,33 @@ export function PastOrders() {
         setOrderDetailsModal(true);
     };
 
-    const getReadableDateTime = (timestamp: number) => {
-        const date = new Date(timestamp);
+    const getReadableDateTime = (dateStr: string) => {
+        const date = new Date(dateStr);
         return date.toLocaleString();
     };
 
     useEffect(() => {
         const fetchPastOrders = async (): Promise<PastOrder[]> => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders`);
-                return PastOrdersResponseSchema.parse(response.data);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                    },
+                });
+                let data = response.data;
+                if (!Array.isArray(data)) {
+                    data = [data];
+                }
+                const parsed = PastOrdersResponseSchema.safeParse(data);
+                if (parsed.success) {
+                    return parsed.data;
+                } else {
+                    console.error("Schema validation failed", parsed.error);
+                    return [];
+                }
             } catch (err) {
-                console.error("Failed to fetch past orders data. Loading fallback data...");
-                return fallbackPastOrders;
+                console.error("Failed to fetch past orders data.", err);
+                return [];
             }
         };
 
@@ -130,10 +73,13 @@ export function PastOrders() {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" className="px-6 py-3">Order ID</th>
-                            <th scope="col" className="px-6 py-3">Full Name</th>
-                            <th scope="col" className="px-6 py-3">Total Bill</th>
-                            <th scope="col" className="px-6 py-3">Timestamp</th>
-                            <th scope="col" className="px-6 py-3"><span className="sr-only">Edit/View</span></th>
+                            <th scope="col" className="px-6 py-3">Total Price</th>
+                            <th scope="col" className="px-6 py-3">Status</th>
+                            <th scope="col" className="px-6 py-3">Created</th>
+                            <th scope="col" className="px-6 py-3">Instructions</th>
+                            <th scope="col" className="px-6 py-3">Restaurant</th>
+                            <th scope="col" className="px-6 py-3">Customer</th>
+                            <th scope="col" className="px-6 py-3"><span className="sr-only">View</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,11 +88,14 @@ export function PastOrders() {
                                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                     {order.id}
                                 </th>
-                                <td className="px-6 py-4">{order.name}</td>
-                                <td className="px-6 py-4">{order.bill}</td>
-                                <td className="px-6 py-4">{getReadableDateTime(order.timestamp)}</td>
+                                <td className="px-6 py-4">{order.total_price}</td>
+                                <td className="px-6 py-4">{order.status}</td>
+                                <td className="px-6 py-4">{getReadableDateTime(order.date_created)}</td>
+                                <td className="px-6 py-4">{order.instructions}</td>
+                                <td className="px-6 py-4">{order.restaurant}</td>
+                                <td className="px-6 py-4">{order.customer}</td>
                                 <td className="px-6 py-4 text-right">
-                                    {!order.isEditable && (selectedOrder?.id === order.id) && (
+                                    {(selectedOrder?.id === order.id) && (
                                         <OrderDetailsModal
                                             isOpen={isOrderDetailsModalOpen}
                                             onClose={() => {
@@ -160,7 +109,7 @@ export function PastOrders() {
                                         onClick={() => openOrderDetailsModal(order)}
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                     >
-                                        {order.isEditable ? "Edit" : "View"}
+                                        View
                                     </button>
                                 </td>
                             </tr>
