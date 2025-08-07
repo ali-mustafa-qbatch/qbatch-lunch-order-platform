@@ -33,6 +33,11 @@ export function PastOrders() {
         return date.toLocaleString();
     };
 
+    const isOrderEditable = (): boolean => {
+        const now = new Date();
+        return now.getHours() < 12;
+    }
+
     useEffect(() => {
         const fetchPastOrders = async (): Promise<PastOrder[]> => {
             try {
@@ -105,7 +110,9 @@ export function PastOrders() {
                                         onClick={() => openOrderDetailsModal(order)}
                                         className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                     >
-                                        View
+                                        {
+                                            isOrderEditable() ? "Edit" : "View"
+                                        }
                                     </button>
                                 </td>
                             </tr>
