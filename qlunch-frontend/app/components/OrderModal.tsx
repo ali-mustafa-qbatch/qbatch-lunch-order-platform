@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+import axiosInstance from '~/utils/axiosInstance';
 
 type ItemField = { value: string };
 type OrderFormData = {
@@ -58,19 +57,8 @@ export function OrderModal({ isOpen, onClose, onSubmit, restaurantId, restaurant
             restaurant: restaurantId,
         };
         try {
-            const response = await fetch(`${BACKEND_URL}/api/orders/create`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                },
-                body: JSON.stringify(payload),
-            });
-            if (!response.ok) {
-                const errData = await response.json();
-                throw new Error(errData.detail || 'Failed to create order');
-            }
-            const data = await response.json();
+            const response = await axiosInstance.post(`/api/orders/create`, payload);
+            const data = response.data;
             onSubmit(data); 
             setFormData({ items: [], instructions: '', restaurant: restaurantId });
             onClose();

@@ -1,7 +1,7 @@
 import { OrderDetailsModal } from "./OrderDetailsModal";
 import { useState, useEffect } from "react";
 import { z } from "zod";
-import axios from "axios";
+import axiosInstance from "~/utils/axiosInstance";
 
 const pastOrderSchema = z.object({
     id: z.number(),
@@ -36,11 +36,7 @@ export function PastOrders() {
     useEffect(() => {
         const fetchPastOrders = async (): Promise<PastOrder[]> => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders/`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-                    },
-                });
+                const response = await axiosInstance.get(`/api/orders/`);
                 let data = response.data;
                 if (!Array.isArray(data)) {
                     data = [data];
