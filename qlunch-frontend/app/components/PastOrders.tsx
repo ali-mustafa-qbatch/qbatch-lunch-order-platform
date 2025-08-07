@@ -107,7 +107,7 @@ export function PastOrders() {
     useEffect(() => {
         const fetchPastOrders = async (): Promise<PastOrder[]> => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/past-orders`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/orders`);
                 return PastOrdersResponseSchema.parse(response.data);
             } catch (err) {
                 console.error("Failed to fetch past orders data. Loading fallback data...");
