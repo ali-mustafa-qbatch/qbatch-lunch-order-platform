@@ -11,53 +11,53 @@ def get_restaurants(request):
     serializer = RestaurantSerializer(restaurants, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_restaurant(request):
-    if not request.user.is_staff:
-        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def create_restaurant(request):
+#     if not request.user.is_staff:
+#         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
-    serializer = RestaurantSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     serializer = RestaurantSerializer(data=request.data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_restaurant(request):
-    if not request.user.is_staff:
-        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def delete_restaurant(request):
+#     if not request.user.is_staff:
+#         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
     
-    restaurant_id = request.data.get('id')
-    if not restaurant_id:
-        return Response({"detail": "Restaurant ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     restaurant_id = request.data.get('id')
+#     if not restaurant_id:
+#         return Response({"detail": "Restaurant ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     
-    try:
-        restaurant = Restaurant.objects.get(id=restaurant_id)
-        restaurant.delete()
-        return Response({"detail": "Restaurant deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-    except Restaurant.DoesNotExist:
-        return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
+#     try:
+#         restaurant = Restaurant.objects.get(id=restaurant_id)
+#         restaurant.delete()
+#         return Response({"detail": "Restaurant deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+#     except Restaurant.DoesNotExist:
+#         return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
     
-@api_view(['PUT'])
-@permission_classes([IsAuthenticated])
-def update_restaurant(request):
-    if not request.user.is_staff:
-        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+# @api_view(['PUT'])
+# @permission_classes([IsAuthenticated])
+# def update_restaurant(request):
+#     if not request.user.is_staff:
+#         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
     
-    restaurant_id = request.data.get('id')
-    if not restaurant_id:
-        return Response({"detail": "Restaurant ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     restaurant_id = request.data.get('id')
+#     if not restaurant_id:
+#         return Response({"detail": "Restaurant ID is required."}, status=status.HTTP_400_BAD_REQUEST)
     
-    try:
-        restaurant = Restaurant.objects.get(id=restaurant_id)
-    except Restaurant.DoesNotExist:
-        return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
+#     try:
+#         restaurant = Restaurant.objects.get(id=restaurant_id)
+#     except Restaurant.DoesNotExist:
+#         return Response({"detail": "Restaurant not found."}, status=status.HTTP_404_NOT_FOUND)
     
-    serializer = RestaurantSerializer(restaurant, data=request.data, partial=True)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     serializer = RestaurantSerializer(restaurant, data=request.data, partial=True)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
