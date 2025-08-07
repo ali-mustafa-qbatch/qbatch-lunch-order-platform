@@ -87,7 +87,7 @@ export function PastOrders() {
                                 <td className="px-6 py-4">{order.total_price}</td>
                                 <td className="px-6 py-4">{order.status}</td>
                                 <td className="px-6 py-4">{getReadableDateTime(order.date_created)}</td>
-                                <td className="px-6 py-4">{order.instructions}</td>
+                                <td className="px-6 py-4">{order?.instructions ? order.instructions : "-"}</td>
                                 <td className="px-6 py-4">{order.restaurant}</td>
                                 <td className="px-6 py-4">{order.customer}</td>
                                 <td className="px-6 py-4 text-right">
