@@ -15,12 +15,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     useEffect(() => {
         const token = localStorage.getItem('access_token');
         const username = localStorage.getItem('username');
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
 
         if (token && username) {
             setState({
                 isAuthenticated: true,
-                user: { username, isAdmin },
+                user: { username },
                 loading: false,
             });
         } else {
@@ -35,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         setState({
             isAuthenticated: true,
-            user: { username, isAdmin: false },
+            user: { username },
             loading: false,
         });
     };
@@ -44,7 +43,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('username');
-        localStorage.removeItem('isAdmin');
 
         setState({
             isAuthenticated: false,
