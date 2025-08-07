@@ -34,42 +34,42 @@ def delete_order(request, pk):
     order.delete()
     return Response({"detail": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
-@api_view(['PATCH'])
-@permission_classes([IsAuthenticated])
-def update_order_status(request, pk):
-    if not request.user.is_staff:
-        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+# @api_view(['PATCH'])
+# @permission_classes([IsAuthenticated])
+# def update_order_status(request, pk):
+#     if not request.user.is_staff:
+#         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
-    try:
-        order = Order.objects.get(pk=pk)
-    except Order.DoesNotExist:
-        return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+#     try:
+#         order = Order.objects.get(pk=pk)
+#     except Order.DoesNotExist:
+#         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    updated_status = request.data.get('status')
-    if updated_status:
-        order.status = updated_status
-        order.save()
-        serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     updated_status = request.data.get('status')
+#     if updated_status:
+#         order.status = updated_status
+#         order.save()
+#         serializer = OrderSerializer(order)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    return Response({"detail": "Status field is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     return Response({"detail": "Status field is required."}, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['PATCH'])
-@permission_classes([IsAuthenticated])
-def update_order_total_price(request, pk):
-    if not request.user.is_staff:
-        return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
+# @api_view(['PATCH'])
+# @permission_classes([IsAuthenticated])
+# def update_order_total_price(request, pk):
+#     if not request.user.is_staff:
+#         return Response({"detail": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
-    try:
-        order = Order.objects.get(pk=pk)
-    except Order.DoesNotExist:
-        return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+#     try:
+#         order = Order.objects.get(pk=pk)
+#     except Order.DoesNotExist:
+#         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    updated_price = request.data.get('total_price')
-    if updated_price is not None:
-        order.total_price = updated_price
-        order.save()
-        serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+#     updated_price = request.data.get('total_price')
+#     if updated_price is not None:
+#         order.total_price = updated_price
+#         order.save()
+#         serializer = OrderSerializer(order)
+#         return Response(serializer.data, status=status.HTTP_200_OK)
     
-    return Response({"detail": "Total price field is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     return Response({"detail": "Total price field is required."}, status=status.HTTP_400_BAD_REQUEST)
