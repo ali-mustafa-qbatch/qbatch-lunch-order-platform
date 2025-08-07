@@ -34,11 +34,9 @@ export const Navbar = () => {
                                     onClick={() => setProfileMenuOpen(prev => !prev)}
                                     className="flex items-center space-x-2 focus:outline-none"
                                 >
-                                    <img
-                                        src="/profile-icon.svg"
-                                        alt="Profile"
-                                        className="w-8 h-8 rounded-full"
-                                    />
+                                    <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-bold text-lg">
+                                        {user?.username?.charAt(0)?.toUpperCase() || "?"}
+                                    </div>
                                     <span className="text-gray-700 font-medium">{user?.username}</span>
                                 </button>
 
