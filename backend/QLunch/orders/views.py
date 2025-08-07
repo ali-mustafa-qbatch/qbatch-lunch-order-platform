@@ -12,7 +12,10 @@ def get_orders(request):
     try:
         order = Order.objects.get(customer=request.user)
         serializer = OrderSerializer(order)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        response_data = serializer.data
+        response_data['customer'] = request.user.username
+        response_data['restaurant'] = order.restaurant.name if order.restaurant else None
+        return Response(response_data, status=status.HTTP_200_OK)
     except Order.DoesNotExist:
         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
