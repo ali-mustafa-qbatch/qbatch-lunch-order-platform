@@ -10,11 +10,12 @@ from rest_framework.decorators import permission_classes
 @permission_classes([IsAuthenticated])
 def get_orders(request):
     try:
-        order = Order.objects.get(customer=request.user)
-        serializer = OrderSerializer(order)
+        orders = Order.objects.filter(customer=request.user)
+        serializer = OrderSerializer(orders, many=True)
         response_data = serializer.data
-        response_data['customer'] = request.user.username
-        response_data['restaurant'] = order.restaurant.name if order.restaurant else None
+        for order_data, order in zip(response_data, orders):
+            order_data['customer'] = request.user.username
+            order_data['restaurant'] = order.restaurant.name if order.restaurant else None
         return Response(response_data, status=status.HTTP_200_OK)
     except Order.DoesNotExist:
         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
