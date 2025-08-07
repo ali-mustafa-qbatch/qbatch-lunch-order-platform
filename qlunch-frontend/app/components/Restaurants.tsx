@@ -17,7 +17,7 @@ type Restaurant = {
     menu_images: MenuImage[];
 };
 
-export function Restaurants({ user = null }) {
+export function Restaurants() {
     const [isOrderDialogOpen, setOrderDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
@@ -55,15 +55,6 @@ export function Restaurants({ user = null }) {
         setSelectedRestaurant(restaurantName);
         setOrderDialog(true);
     };
-
-    const openRestaurantEditModal = () => {
-        // Implement edit modal logic here
-    }
-
-
-    const deleteSelectedRestaurant = () => {
-        // Implement delete logic here
-    }
 
     const filteredRestaurants = restaurants.filter((restaurant: Restaurant) =>
         restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
