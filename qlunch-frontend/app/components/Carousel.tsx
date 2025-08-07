@@ -1,9 +1,13 @@
 import { useState, useRef } from 'react';
 
-export function Carousel({ images }) {
-  const [current, setCurrent] = useState(0);
-  const touchStartX = useRef(null);
-  const touchEndX = useRef(null);
+interface CarouselProps {
+  images: string[];
+}
+
+export function Carousel({ images }: CarouselProps) {
+  const [current, setCurrent] = useState<number>(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % images.length);
@@ -13,25 +17,24 @@ export function Carousel({ images }) {
     setCurrent((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const handleTouchStart = (e) => {
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
   };
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     touchEndX.current = e.touches[0].clientX;
   };
 
   const handleTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current) {
+    if (touchStartX.current === null || touchEndX.current === null) {
       return;
-    } 
+    }
     const delta = touchStartX.current - touchEndX.current;
     if (delta > 50) {
       nextSlide();
+    } else if (delta < -50) {
+      prevSlide();
     }
-    else if (delta < -50) {
-      prevSlide()
-    };
     touchStartX.current = null;
     touchEndX.current = null;
   };

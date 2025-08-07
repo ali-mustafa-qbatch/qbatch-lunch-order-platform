@@ -1,20 +1,9 @@
 import { Restaurants } from "./Restaurants";
 import { PastOrders } from "./PastOrders";
-import { useState, useEffect } from "react";
+import { useAuth } from '../context/AuthContext';
 
 export function HomePage() {
-	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	
-	useEffect(() => {
-	if (typeof window !== "undefined") {
-		const token = localStorage.getItem('access_token');
-		if (token) {
-			setIsAuthenticated(true);
-		} else {
-			setIsAuthenticated(false);
-		}
-	}
-	}, []);
+	const { isAuthenticated } = useAuth();
 
 	return (
 		<div className="min-h-screen bg-gray-100">
