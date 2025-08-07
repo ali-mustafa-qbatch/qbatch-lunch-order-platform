@@ -51,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             user: null,
             loading: false,
         });
+        window.location.reload();
     };
 
     return (
