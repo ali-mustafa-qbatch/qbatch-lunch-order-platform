@@ -85,33 +85,20 @@ export function Restaurants({ user = null }) {
                                 <Carousel images={restaurant.menu_images?.map(img => `${import.meta.env.VITE_BACKEND_URL}${img.image}`) || []} />
                                 <div className="p-5">
                                     <h5 className="text-2xl font-bold text-gray-900 mb-2">{restaurant.name}</h5>
-                                    {user === "Admin" ? (
-                                        <div className="flex gap-2">
-                                            <button onClick={() => openRestaurantEditModal()} aria-label={`Order from ${restaurant.name}`} className="mt-2 w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" >
-                                                Edit
-                                            </button>
-                                            <button onClick={() => deleteSelectedRestaurant()} aria-label={`Order from ${restaurant.name}`} className="mt-2 w-full px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700" >
-                                                Delete
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <button onClick={() => openModal(restaurant.name)} aria-label={`Order from ${restaurant.name}`} className="mt-2 w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" >
-                                                Order Now
-                                            </button>
-                                            {selectedRestaurant === restaurant.name && (
-                                                <OrderModal
-                                                    isOpen={isOrderDialogOpen}
-                                                    onClose={() => {
-                                                        setOrderDialog(false);
-                                                        setSelectedRestaurant(null);
-                                                    }}
-                                                    onSubmit={handleSubmit}
-                                                    restaurantId={restaurant.id}
-                                                    restaurantName={restaurant.name}
-                                                />
-                                            )}
-                                        </>
+                                    <button onClick={() => openModal(restaurant.name)} aria-label={`Order from ${restaurant.name}`} className="mt-2 w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" >
+                                        Order Now
+                                    </button>
+                                    {selectedRestaurant === restaurant.name && (
+                                        <OrderModal
+                                            isOpen={isOrderDialogOpen}
+                                            onClose={() => {
+                                                setOrderDialog(false);
+                                                setSelectedRestaurant(null);
+                                            }}
+                                            onSubmit={handleSubmit}
+                                            restaurantId={restaurant.id}
+                                            restaurantName={restaurant.name}
+                                        />
                                     )}
                                 </div>
                             </div>
