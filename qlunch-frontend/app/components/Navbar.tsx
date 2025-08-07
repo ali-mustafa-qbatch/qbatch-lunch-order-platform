@@ -42,13 +42,6 @@ export const Navbar = () => {
 
                                 {isProfileMenuOpen && (
                                     <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
-                                        <Link
-                                            to="/profile"
-                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                            onClick={() => setProfileMenuOpen(false)}
-                                        >
-                                            View Profile
-                                        </Link>
                                         <button
                                             onClick={() => {
                                                 logout();
@@ -106,14 +99,9 @@ export const Navbar = () => {
                         Past Orders
                     </a>
                     {isAuthenticated ? (
-                        <>
-                            <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                View Profile
-                            </Link>
-                            <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
-                                Logout
-                            </button>
-                        </>
+                        <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
+                            Logout
+                        </button>
                     ) : (
                         <>
                             <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
