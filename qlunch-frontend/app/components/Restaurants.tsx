@@ -107,6 +107,7 @@ export function Restaurants({ user = null }) {
                                                         setSelectedRestaurant(null);
                                                     }}
                                                     onSubmit={handleSubmit}
+                                                    restaurantId={restaurant.id}
                                                     restaurantName={restaurant.name}
                                                 />
                                             )}
