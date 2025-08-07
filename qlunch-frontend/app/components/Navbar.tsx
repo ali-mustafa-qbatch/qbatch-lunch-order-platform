@@ -20,62 +20,53 @@ export const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0">
-                        <Link to={user === 'Admin' ? "/admin" : "/"}>
+                        <Link to="/">
                             <img src='Qbatch_logo.svg' alt="Qbatch Logo" className="h-8 w-auto" />
                         </Link>
                     </div>
 
                     <div className="hidden md:flex items-center space-x-6">
-                        {user === 'Admin' ? (
-                            <>
-                                <Link to="/admin" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Dashboard</Link>
-                                <Link to="/admin/orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Orders</Link>
-                            </>
+                        <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
+                        <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
+                        {isAuthenticated ? (
+                            <div className="relative">
+                                <button
+                                    onClick={() => setProfileMenuOpen(prev => !prev)}
+                                    className="flex items-center space-x-2 focus:outline-none"
+                                >
+                                    <img
+                                        src="/profile-icon.svg"
+                                        alt="Profile"
+                                        className="w-8 h-8 rounded-full"
+                                    />
+                                    <span className="text-gray-700 font-medium">{user?.username}</span>
+                                </button>
+
+                                {isProfileMenuOpen && (
+                                    <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
+                                        <Link
+                                            to="/profile"
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            onClick={() => setProfileMenuOpen(false)}
+                                        >
+                                            View Profile
+                                        </Link>
+                                        <button
+                                            onClick={() => {
+                                                logout();
+                                                setProfileMenuOpen(false);
+                                            }}
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <>
-                                <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
-                                <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
-                                {isAuthenticated ? (
-                                    <div className="relative">
-                                        <button
-                                            onClick={() => setProfileMenuOpen(prev => !prev)}
-                                            className="flex items-center space-x-2 focus:outline-none"
-                                        >
-                                            <img
-                                                src="/profile-icon.svg" 
-                                                alt="Profile"
-                                                className="w-8 h-8 rounded-full"
-                                            />
-                                            <span className="text-gray-700 font-medium">{user?.username}</span>
-                                        </button>
-
-                                        {isProfileMenuOpen && (
-                                            <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg">
-                                                <Link
-                                                    to="/profile"
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                    onClick={() => setProfileMenuOpen(false)}
-                                                >
-                                                    View Profile
-                                                </Link>
-                                                <button
-                                                    onClick={() => {
-                                                        logout();
-                                                        setProfileMenuOpen(false);
-                                                    }}
-                                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                >
-                                                    Logout
-                                                </button>
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <>
-                                        <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
-                                        <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
-                                    </>
-                                )}
+                                <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
+                                <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
                             </>
                         )}
                     </div>
@@ -110,42 +101,29 @@ export const Navbar = () => {
 
             <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b shadow-sm">
-                    {user === 'Admin' ? (
+                    <Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                        Home
+                    </Link>
+                    <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                        Past Orders
+                    </a>
+                    {isAuthenticated ? (
                         <>
-                            <Link to="/admin" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                Dashboard
+                            <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                View Profile
                             </Link>
-                            <Link to="/admin/orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                Orders
-                            </Link>
+                            <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
+                                Logout
+                            </button>
                         </>
                     ) : (
                         <>
-                            <Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                Home
+                            <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Sign In
                             </Link>
-                            <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                Past Orders
-                            </a>
-                            {isAuthenticated ? (
-                                <>
-                                    <Link to="/profile" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                        View Profile
-                                    </Link>
-                                    <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
-                                        Logout
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                        Sign In
-                                    </Link>
-                                    <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
-                                        Get Started
-                                    </Link>
-                                </>
-                            )}
+                            <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                                Get Started
+                            </Link>
                         </>
                     )}
                 </div>
