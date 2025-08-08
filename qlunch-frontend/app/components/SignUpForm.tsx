@@ -13,8 +13,8 @@ const signUpSchema = z.object({
             /^[a-zA-Z0-9_-]+$/, 
             "Username can only contain letters, numbers, underscores, and hyphens"
         ),
-    firstName: z.string().min(1, "First name is required"),
-    lastName: z.string().min(1, "Last name is required"),
+    first_name: z.string().min(1, "First name is required"),
+    last_name: z.string().min(1, "Last name is required"),
     email: z
         .string()
         .regex(
@@ -28,8 +28,8 @@ const signUpSchema = z.object({
             /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$*])/,
             "Password must include uppercase, lowercase, number, and special character"
         ),
-    confirmPassword: z.string().min(8, "Confirm password is required"),
-}).refine((data) => data.password === data.confirmPassword, {
+    confirm_password: z.string().min(8, "Confirm password is required"),
+}).refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
 });
@@ -82,28 +82,28 @@ export function SignUpForm() {
                                 <div>
                                     <label className="text-slate-900 text-sm font-medium mb-2 block">First Name</label>
                                     <input
-                                        {...register("firstName")}
+                                        {...register("first_name")}
                                         type="text"
                                         placeholder="Enter first name"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.firstName ? "border border-red-600" : "border border-slate-300"
+                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.first_name ? "border border-red-600" : "border border-slate-300"
                                             }`}
                                     />
-                                    {errors.firstName && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.firstName.message}</p>
+                                    {errors.first_name && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.first_name.message}</p>
                                     )}
                                 </div>
 
                                 <div>
                                     <label className="text-slate-900 text-sm font-medium mb-2 block">Last Name</label>
                                     <input
-                                        {...register("lastName")}
+                                        {...register("last_name")}
                                         type="text"
                                         placeholder="Enter last name"
-                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.lastName ? "border border-red-600" : "border border-slate-300"
+                                        className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.last_name ? "border border-red-600" : "border border-slate-300"
                                             }`}
                                     />
-                                    {errors.lastName && (
-                                        <p className="text-red-600 text-sm mt-1">{errors.lastName.message}</p>
+                                    {errors.last_name && (
+                                        <p className="text-red-600 text-sm mt-1">{errors.last_name.message}</p>
                                     )}
                                 </div>
 
@@ -158,19 +158,19 @@ export function SignUpForm() {
                                     <label className="text-slate-900 text-sm font-medium mb-2 block">Confirm Password</label>
                                     <div className="relative flex items-center">
                                         <input
-                                            {...register("confirmPassword")}
+                                            {...register("confirm_password")}
                                             type={confirmPasswordToggle ? "text" : "password"}
                                             placeholder="Confirm password"
-                                            className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.confirmPassword ? "border border-red-600" : "border border-slate-300"
+                                            className={`w-full text-slate-900 text-sm px-4 py-3 pr-8 outline-[#2173ea] ${errors.confirm_password ? "border border-red-600" : "border border-slate-300"
                                                 }`}
                                         />
                                         <svg onClick={handleConfirmPasswordToggle} xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" className="w-4 h-4 absolute right-4 cursor-pointer" viewBox="0 0 128 128">
                                             <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" data-original="#000000"></path>
                                         </svg>
                                     </div>
-                                    {errors.confirmPassword && (
+                                    {errors.confirm_password && (
                                         <p className="text-red-600 text-sm mt-1">
-                                            {errors.confirmPassword.message}
+                                            {errors.confirm_password.message}
                                         </p>
                                     )}
                                 </div>
