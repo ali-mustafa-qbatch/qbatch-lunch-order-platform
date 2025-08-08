@@ -65,7 +65,7 @@ export function SignUpForm() {
             navigate("/sign-in");
         } catch (err) {
             console.error("Response: ", err);
-            alert("Registration failed.");
+            alert("Registration failed.\nResponse " + err);
         }
     };
 

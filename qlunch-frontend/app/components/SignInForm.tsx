@@ -48,7 +48,7 @@ export function SignInForm() {
             navigate("/");
         } catch (err) {
             console.error("Response: ", err);
-            alert("Authentication failed.");
+            alert("Authentication failed.\nResponse " + err);
         }
     };
 
