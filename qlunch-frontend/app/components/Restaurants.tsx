@@ -73,7 +73,7 @@ export function Restaurants() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-3">
                         {filteredRestaurants.map((restaurant) => (
                             <div key={restaurant.id} className="bg-white rounded-lg shadow border border-gray-200">
-                                <Carousel images={restaurant.menu_images?.map(img => `${import.meta.env.VITE_BACKEND_URL}${img.image}`) || []} />
+                                <Carousel images={restaurant.menu_images?.map(img => img.image) || []} />
                                 <div className="p-5">
                                     <h5 className="text-2xl font-bold text-gray-900 mb-2">{restaurant.name}</h5>
                                     <button onClick={() => openModal(restaurant.name)} aria-label={`Order from ${restaurant.name}`} className="mt-2 w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700" >
