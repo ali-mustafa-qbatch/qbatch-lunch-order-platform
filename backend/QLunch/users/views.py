@@ -33,18 +33,18 @@ def login_user(request):
 
     return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
-@api_view(['POST'])
-def refresh_token(request):
-    refresh_token = request.data.get('refresh_token')
-    if not refresh_token:
-        return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        try:
-            refresh = RefreshToken(refresh_token)
-            access_token = str(refresh.access_token)
-            return Response({'access_token': access_token}, status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+# @api_view(['POST'])
+# def refresh_token(request):
+#     refresh_token = request.data.get('refresh_token')
+#     if not refresh_token:
+#         return Response({"detail": "Refresh token is required."}, status=status.HTTP_400_BAD_REQUEST)
+#     else:
+#         try:
+#             refresh = RefreshToken(refresh_token)
+#             access_token = str(refresh.access_token)
+#             return Response({'access_token': access_token}, status=status.HTTP_200_OK)
+#         except Exception as e:
+#             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
