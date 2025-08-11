@@ -1,6 +1,6 @@
-export function SearchBar({searchQuery, setSearchQuery}) {
-    const handleInputChange = (e) => {
-        setSearchQuery(e.target.value);
+export function SearchBar({searchQuery, setSearchQuery}: {searchQuery: string, setSearchQuery: (query: string) => void}) {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(event.target.value);
     };
     
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { OrderModal } from "./OrderModal";
 import { SearchBar } from "./SearchBar";
 import { Carousel } from "./Carousel";
@@ -91,7 +91,7 @@ export function Restaurants() {
                                         <button
                                             onClick={() => openModal(restaurant.name)}
                                             aria-label={`Order from ${restaurant.name}`}
-                                            className="mt-2 w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                                            className="mt-2 w-full px-4 py-2 text-white bg-[#2173ea] rounded hover:bg-blue-700"
                                         >
                                             Order Now
                                         </button>
@@ -134,7 +134,7 @@ export function Restaurants() {
                                 onClick={() => setCurrentPage((prev) => prev + 1)}
                                 className={`px-4 py-2 rounded ${
                                     nextPage
-                                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                                        ? "bg-[#2173ea] text-white hover:bg-blue-700"
                                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                 }`}
                             >

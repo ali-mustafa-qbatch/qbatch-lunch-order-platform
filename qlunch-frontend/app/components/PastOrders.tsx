@@ -100,28 +100,22 @@ export function PastOrders() {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" className="px-6 py-3">Order ID</th>
-                            <th scope="col" className="px-6 py-3">Total Price</th>
+                            <th scope="col" className="px-6 py-3">Restaurant</th>
+                            <th scope="col" className="px-6 py-3">Instructions</th>
                             <th scope="col" className="px-6 py-3">Status</th>
                             <th scope="col" className="px-6 py-3">Created</th>
-                            <th scope="col" className="px-6 py-3">Instructions</th>
-                            <th scope="col" className="px-6 py-3">Restaurant</th>
-                            <th scope="col" className="px-6 py-3">Customer</th>
+                            <th scope="col" className="px-6 py-3">Total Price</th>
                             <th scope="col" className="px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {pastOrders.map((order) => (
                             <tr key={order.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                    {order.id}
-                                </th>
-                                <td className="px-6 py-4">{order.total_price}</td>
+                                <td className="px-6 py-4">{order.restaurant}</td>
+                                <td className="px-6 py-4">{order?.instructions ? order.instructions : "-"}</td>
                                 <td className="px-6 py-4">{order.status}</td>
                                 <td className="px-6 py-4">{getReadableDateTime(order.date_created)}</td>
-                                <td className="px-6 py-4">{order?.instructions ? order.instructions : "-"}</td>
-                                <td className="px-6 py-4">{order.restaurant}</td>
-                                <td className="px-6 py-4">{order.customer}</td>
+                                <td className="px-6 py-4">{order.total_price}</td>
                                 <td className="px-6 py-4 text-right">
                                     {(selectedOrder?.id === order.id && isOrderEditable(order.status)) ? (
                                         <OrderModal
@@ -161,10 +155,10 @@ export function PastOrders() {
                                             onClick={() => 
                                                 (isOrderEditable(order.status)) ? openOrderModal(order) : openOrderDetailsModal(order)
                                             }
-                                            className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline"
+                                            className="font-medium cursor-pointer text-[#2173ea] dark:text-blue-500 hover:underline"
                                         >
                                             {
-                                                (isOrderEditable(order.status)) ? "Edit" : "View"
+                                                (isOrderEditable(order.status)) ? "Edit" : "Details"
                                             }
                                         </button>
                                         {isOrderEditable(order.status) && (
