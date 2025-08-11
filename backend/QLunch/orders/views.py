@@ -5,31 +5,51 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework import generics
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_orders(request):
-    try:
-        orders = Order.objects.filter(customer=request.user)
-        serializer = OrderSerializer(orders, many=True)
+# @api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+# def get_orders(request):
+#     try:
+#         orders = Order.objects.filter(customer=request.user)
+#         serializer = OrderSerializer(orders, many=True)
+#         response_data = serializer.data
+#         for order_data, order in zip(response_data, orders):
+#             order_data['customer'] = request.user.username
+#             order_data['restaurant'] = order.restaurant.name if order.restaurant else None
+#         return Response(response_data, status=status.HTTP_200_OK)
+#     except Order.DoesNotExist:
+#         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+
+# @api_view(['POST'])
+# @permission_classes([IsAuthenticated])
+# def create_order(request):
+#     data = request.data.copy()
+#     data["customer"] = request.user.id
+#     serializer = OrderSerializer(data=data)
+#     if serializer.is_valid():
+#         serializer.save()
+#         return Response(serializer.data, status=status.HTTP_201_CREATED)
+#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ListCreateOrder(generics.ListCreateAPIView):
+    serializer_class = OrderSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Order.objects.filter(customer=self.request.user)
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
         response_data = serializer.data
-        for order_data, order in zip(response_data, orders):
+        for order_data, order in zip(response_data, queryset):
             order_data['customer'] = request.user.username
             order_data['restaurant'] = order.restaurant.name if order.restaurant else None
         return Response(response_data, status=status.HTTP_200_OK)
-    except Order.DoesNotExist:
-        return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
-@api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def create_order(request):
-    data = request.data.copy()
-    data["customer"] = request.user.id
-    serializer = OrderSerializer(data=data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def perform_create(self, serializer):
+        serializer.save(customer=self.request.user)
 
 # @api_view(['DELETE'])
 # @permission_classes([IsAuthenticated])
