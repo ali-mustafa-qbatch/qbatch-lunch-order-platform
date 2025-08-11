@@ -20,7 +20,7 @@ from rest_framework import generics
 #     return paginator.get_paginated_response(serializer.data)
 
 class ListRestaurants(generics.ListAPIView):
-    queryset = Restaurant.objects.all()
+    queryset = Restaurant.objects.all().order_by('-date_created')
     serializer_class = RestaurantSerializer
     pagination_class = PageNumberPagination
 
