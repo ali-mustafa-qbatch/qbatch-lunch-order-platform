@@ -15,6 +15,7 @@ type OrderModalProps = {
     restaurantId: number;
     restaurantName: string;
     order?: {
+        id: number;
         items?: ItemField[];
         instructions?: string;
         restaurant?: number;
@@ -57,13 +58,18 @@ export function OrderModal({ isOpen, onClose, onSubmit, restaurantId, restaurant
             restaurant: restaurantId,
         };
         try {
-            const response = await axiosInstance.post(`/api/orders/`, payload);
+            let response;
+            if (order) {
+                response = await axiosInstance.put(`/api/orders/${order.id}/`, payload);
+            } else {
+                response = await axiosInstance.post(`/api/orders/`, payload);
+            }
             const data = response.data;
-            onSubmit(data); 
+            onSubmit(data);
             setFormData({ items: [], instructions: '', restaurant: restaurantId });
             onClose();
-        } catch (err) {
-            setError(err instanceof Error ? err.message : 'Unknown error');
+        } catch (err: any) {
+            setError(err.response?.data?.detail || err.message || 'Unknown error');
         } finally {
             setLoading(false);
         }
@@ -109,7 +115,7 @@ export function OrderModal({ isOpen, onClose, onSubmit, restaurantId, restaurant
                     <form className="p-4 md:p-5" onSubmit={handleSubmit}>
                         <div className="grid gap-4 mb-4 grid-cols-2">
                             <div className="col-span-2">
-                                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >
+                                <label className="block mb-2 text-sm text-left font-medium text-gray-900 dark:text-white" >
                                     Items
                                 </label>
                                 {inputFields.map((field, index) => (
@@ -128,7 +134,7 @@ export function OrderModal({ isOpen, onClose, onSubmit, restaurantId, restaurant
                                 <button onClick={handleAddFields} className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white'>Add Input Field</button>
                             </div>
                             <div className="col-span-2">
-                                <label htmlFor="instructions" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" >
+                                <label htmlFor="instructions" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left" >
                                     Special Instructions (Optional)
                                 </label>
                                 <textarea id="instructions" name="instructions" rows={4} value={formData.instructions} onChange={handleChange} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write instructions here" />

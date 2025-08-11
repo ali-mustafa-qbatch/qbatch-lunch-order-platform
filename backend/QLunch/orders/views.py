@@ -34,7 +34,7 @@ from rest_framework.exceptions import PermissionDenied
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ListCreateDeleteOrder(generics.ListCreateAPIView, generics.DestroyAPIView):
+class ListCreateDeleteOrder(generics.ListCreateAPIView, generics.DestroyAPIView, generics.UpdateAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
@@ -48,6 +48,7 @@ class ListCreateDeleteOrder(generics.ListCreateAPIView, generics.DestroyAPIView)
         for order_data, order in zip(response_data, queryset):
             order_data['customer'] = request.user.username
             order_data['restaurant'] = order.restaurant.name if order.restaurant else None
+            order_data['restaurant_id'] = order.restaurant.id if order.restaurant else None
         return Response(response_data, status=status.HTTP_200_OK)
 
     def perform_create(self, serializer):

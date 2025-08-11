@@ -2,6 +2,7 @@ import { OrderDetailsModal } from "./OrderDetailsModal";
 import { useState, useEffect } from "react";
 import { z } from "zod";
 import axiosInstance from "~/utils/axiosInstance";
+import { OrderModal } from "./OrderModal";
 
 const pastOrderSchema = z.object({
     id: z.number(),
@@ -12,6 +13,7 @@ const pastOrderSchema = z.object({
     date_created: z.string(),
     date_updated: z.string(),
     restaurant: z.string(),
+    restaurant_id: z.number(),
     customer: z.string(),
 });
 
@@ -21,6 +23,7 @@ export type PastOrder = z.infer<typeof pastOrderSchema>;
 export function PastOrders() {
     const [pastOrders, setPastOrders] = useState<PastOrder[]>([]);
     const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
+    const [isOrderModalOpen, setOrderModal] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<PastOrder | null>(null);
 
     const openOrderDetailsModal = (order: PastOrder) => {
@@ -28,14 +31,19 @@ export function PastOrders() {
         setOrderDetailsModal(true);
     };
 
+    const openOrderModal = (order: any) => {
+        setSelectedOrder(order);
+        setOrderModal(true);
+    };
+
     const getReadableDateTime = (dateStr: string) => {
         const date = new Date(dateStr);
         return date.toLocaleString();
     };
 
-    const isOrderEditable = (): boolean => {
+    const isOrderEditable = (status: string): boolean => {
         const now = new Date();
-        return now.getHours() < 12;
+        return (status === 'pending' && now.getHours() < 12);
     }
 
     useEffect(() => {
@@ -115,7 +123,30 @@ export function PastOrders() {
                                 <td className="px-6 py-4">{order.restaurant}</td>
                                 <td className="px-6 py-4">{order.customer}</td>
                                 <td className="px-6 py-4 text-right">
-                                    {(selectedOrder?.id === order.id) && (
+                                    {(selectedOrder?.id === order.id && isOrderEditable(order.status)) ? (
+                                        <OrderModal
+                                            isOpen={isOrderModalOpen}
+                                            onClose={() => {
+                                                setOrderModal(false);
+                                                setSelectedOrder(null);
+                                            }}
+                                            onSubmit={(updatedOrder) => {
+                                                setPastOrders((prev) =>
+                                                    prev.map((o) => (o.id === updatedOrder.id ? updatedOrder : o))
+                                                );
+                                            }}
+                                            restaurantId={order.restaurant_id}
+                                            restaurantName={order.restaurant}
+                                            order={
+                                                {
+                                                    id: order.id,
+                                                    items: order.items,
+                                                    instructions: order.instructions,
+                                                    restaurant: order.restaurant_id,
+                                                }
+                                            }
+                                        />
+                                    ) : (
                                         <OrderDetailsModal
                                             isOpen={isOrderDetailsModalOpen}
                                             onClose={() => {
@@ -127,16 +158,18 @@ export function PastOrders() {
                                     )}
                                     <div className="flex items-center justify-end space-x-2">
                                         <button
-                                            onClick={() => openOrderDetailsModal(order)}
+                                            onClick={() => 
+                                                (isOrderEditable(order.status)) ? openOrderModal(order) : openOrderDetailsModal(order)
+                                            }
                                             className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline"
                                         >
                                             {
-                                                isOrderEditable() ? "Edit" : "View"
+                                                (isOrderEditable(order.status)) ? "Edit" : "View"
                                             }
                                         </button>
-                                        {order.status === 'pending' && isOrderEditable() && (
+                                        {isOrderEditable(order.status) && (
                                             <>
-                                                <span className="mx-2">|</span>
+                                                <span className="mr-2">|</span>
                                                 <button
                                                     onClick={() => deleteOrder(order)}
                                                     className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
