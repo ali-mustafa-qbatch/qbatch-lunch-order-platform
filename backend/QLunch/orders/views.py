@@ -31,16 +31,16 @@ def create_order(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_order(request, pk):
-    try:
-        order = Order.objects.get(pk=pk, customer=request.user)
-    except Order.DoesNotExist:
-        return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+# @api_view(['DELETE'])
+# @permission_classes([IsAuthenticated])
+# def delete_order(request, pk):
+#     try:
+#         order = Order.objects.get(pk=pk, customer=request.user)
+#     except Order.DoesNotExist:
+#         return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    order.delete()
-    return Response({"detail": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+#     order.delete()
+#     return Response({"detail": "Order deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 # @api_view(['PATCH'])
 # @permission_classes([IsAuthenticated])

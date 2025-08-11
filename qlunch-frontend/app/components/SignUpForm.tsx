@@ -54,7 +54,7 @@ export function SignUpForm() {
 
     const onSubmit = async (data: SignUpFormInputs) => {
         try {
-            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register`, data, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/register/`, data, {
                 headers: {
                     'Content-Type': 'application/json',
                 }

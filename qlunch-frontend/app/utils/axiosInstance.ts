@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
             const refreshToken = localStorage.getItem('refresh_token');
             if (refreshToken) {
                 try {
-                    const res = await axios.post(`${backendUrl}/api/users/token/refresh`, {
+                    const res = await axios.post(`${backendUrl}/api/users/token/refresh/`, {
                         refresh: refreshToken,
                     });
                     const newAccessToken = res.data.access;
