@@ -57,6 +57,19 @@ def logout_user(request):
     except Exception as e:
         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['POST'])
+def forgot_password(request):
+    email = request.data.get('email')
+    if not email:
+        return Response({"detail": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if not email.endswith('@qbatch.com'):
+        return Response({"detail": "Email must be from the domain qbatch.com"}, status=status.HTTP_400_BAD_REQUEST)
+
+    # forgot password logic
+
+    return Response({"detail": "Password reset link sent to your email."}, status=status.HTTP_200_OK)
+    
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 # def get_user_profile(request):

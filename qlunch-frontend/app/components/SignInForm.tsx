@@ -83,7 +83,7 @@ export function SignInForm() {
                             </div>
 
                             <div className="text-sm text-center">
-                                <Link to="/forget-password" className="text-[#2173ea] hover:underline font-semibold">
+                                <Link to="/forgot-password" className="text-[#2173ea] hover:underline font-semibold">
                                     Forgot your password?
                                 </Link>
                             </div>
