@@ -56,6 +56,8 @@ class ListCreateDeleteOrder(generics.ListCreateAPIView, generics.DestroyAPIView)
     def perform_destroy(self, instance):
         if datetime.now().hour < 12:
             raise PermissionDenied("Orders can only be deleted before 12 PM.")
+        elif instance.status in ['cleared', 'delivered']:
+            raise PermissionDenied("Only pending orders can be deleted.")
         else:
             instance.delete()
 

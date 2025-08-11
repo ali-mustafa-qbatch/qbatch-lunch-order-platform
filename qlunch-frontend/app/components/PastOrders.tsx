@@ -134,17 +134,17 @@ export function PastOrders() {
                                                 isOrderEditable() ? "Edit" : "View"
                                             }
                                         </button>
-                                        {isOrderEditable() && (
-                                            <span className="mx-2">|</span>
+                                        {order.status === 'pending' && isOrderEditable() && (
+                                            <>
+                                                <span className="mx-2">|</span>
+                                                <button
+                                                    onClick={() => deleteOrder(order)}
+                                                    className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </>
                                         )}
-                                        <button
-                                            onClick={() => deleteOrder(order)}
-                                            className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
-                                        >
-                                            {
-                                                isOrderEditable() && "Delete"
-                                            }
-                                        </button>
                                     </div>
                                 </td>
                             </tr>
