@@ -2,14 +2,21 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from .serializers import RestaurantSerializer
 from .models import Restaurant
 
 @api_view(['GET'])
 def get_restaurants(request):
+    paginator = PageNumberPagination()
     restaurants = Restaurant.objects.all()
-    serializer = RestaurantSerializer(restaurants, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+
+    result_page = paginator.paginate_queryset(restaurants, request)    
+    if not result_page:
+        return Response({"detail": "No restaurants found."}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = RestaurantSerializer(result_page, many=True)
+    return paginator.get_paginated_response(serializer.data)
 
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
