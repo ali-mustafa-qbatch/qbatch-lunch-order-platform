@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '../context/AuthContext.js';
+import axiosInstance from "~/utils/axiosInstance";
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -11,8 +12,16 @@ export const Navbar = () => {
         setIsOpen(!isOpen);
     };
 
-    const logout = () => {
-        authLogout();
+    const logout = async () => {
+        try {
+            await axiosInstance.post('/api/users/logout/', {
+                refresh_token: localStorage.getItem('refresh_token'),
+            });
+        } catch (error) {
+            console.error('Logout failed:', error);
+        } finally {
+            authLogout();
+        }
     };
 
     return (
