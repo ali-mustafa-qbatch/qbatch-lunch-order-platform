@@ -5,18 +5,24 @@ from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from .serializers import RestaurantSerializer
 from .models import Restaurant
+from rest_framework import generics
 
-@api_view(['GET'])
-def get_restaurants(request):
-    paginator = PageNumberPagination()
-    restaurants = Restaurant.objects.all()
+# @api_view(['GET'])
+# def get_restaurants(request):
+#     paginator = PageNumberPagination()
+#     restaurants = Restaurant.objects.all()
 
-    result_page = paginator.paginate_queryset(restaurants, request)    
-    if not result_page:
-        return Response({"detail": "No restaurants found."}, status=status.HTTP_404_NOT_FOUND)
+#     result_page = paginator.paginate_queryset(restaurants, request)    
+#     if not result_page:
+#         return Response({"detail": "No restaurants found."}, status=status.HTTP_404_NOT_FOUND)
 
-    serializer = RestaurantSerializer(result_page, many=True)
-    return paginator.get_paginated_response(serializer.data)
+#     serializer = RestaurantSerializer(result_page, many=True)
+#     return paginator.get_paginated_response(serializer.data)
+
+class ListRestaurants(generics.ListAPIView):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantSerializer
+    pagination_class = PageNumberPagination
 
 # @api_view(['POST'])
 # @permission_classes([IsAuthenticated])
