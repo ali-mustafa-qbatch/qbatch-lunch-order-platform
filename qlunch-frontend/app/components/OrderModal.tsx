@@ -57,7 +57,7 @@ export function OrderModal({ isOpen, onClose, onSubmit, restaurantId, restaurant
             restaurant: restaurantId,
         };
         try {
-            const response = await axiosInstance.post(`/api/orders/create/`, payload);
+            const response = await axiosInstance.post(`/api/orders/`, payload);
             const data = response.data;
             onSubmit(data); 
             setFormData({ items: [], instructions: '', restaurant: restaurantId });

@@ -67,6 +67,25 @@ export function PastOrders() {
         loadPastOrders();
     }, []);
 
+    const deleteOrder = async (order: PastOrder) => {
+        try {
+            const response = await axiosInstance.delete(`/api/orders/${order.id}/`);
+            if (response.status === 204) {
+                alert("Order deleted successfully.");
+                setPastOrders((prev) => prev.filter((o) => o.id !== order.id));
+            } else {
+                alert("Unexpected response from server.");
+            }
+        } catch (err: any) {
+            if (err.response) {
+                alert(`Failed to delete order. ${err.response.data.detail || "Unknown error"}`);
+            } else {
+                console.error("Failed to delete order", err);
+                alert("Failed to delete order. Please try again.");
+            }
+        }
+    };
+
     return (
         <section className="pb-12 px-6 max-w-4xl mx-auto" id="past-orders">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -80,7 +99,7 @@ export function PastOrders() {
                             <th scope="col" className="px-6 py-3">Instructions</th>
                             <th scope="col" className="px-6 py-3">Restaurant</th>
                             <th scope="col" className="px-6 py-3">Customer</th>
-                            <th scope="col" className="px-6 py-3"><span className="sr-only">View</span></th>
+                            <th scope="col" className="px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,14 +125,27 @@ export function PastOrders() {
                                             order={order}
                                         />
                                     )}
-                                    <button
-                                        onClick={() => openOrderDetailsModal(order)}
-                                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                                    >
-                                        {
-                                            isOrderEditable() ? "Edit" : "View"
-                                        }
-                                    </button>
+                                    <div className="flex items-center justify-end space-x-2">
+                                        <button
+                                            onClick={() => openOrderDetailsModal(order)}
+                                            className="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline"
+                                        >
+                                            {
+                                                isOrderEditable() ? "Edit" : "View"
+                                            }
+                                        </button>
+                                        {isOrderEditable() && (
+                                            <span className="mx-2">|</span>
+                                        )}
+                                        <button
+                                            onClick={() => deleteOrder(order)}
+                                            className="font-medium cursor-pointer text-red-600 dark:text-red-500 hover:underline"
+                                        >
+                                            {
+                                                isOrderEditable() && "Delete"
+                                            }
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

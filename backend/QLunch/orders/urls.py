@@ -1,10 +1,10 @@
 from django.urls import path
-from . import views
-from .views import ListCreateOrder
+# from . import views
+from .views import ListCreateDeleteOrder
 
 urlpatterns = [
-    path("", ListCreateOrder.as_view(), name="get_orders"),
-    path("create/", ListCreateOrder.as_view(), name="create_order"),
+    path("", ListCreateDeleteOrder.as_view(), name="get_orders"),
+    path("<int:pk>/", ListCreateDeleteOrder.as_view(), name="create_order"),
     # path("", views.get_orders, name="get_orders"),
     # path("create/", views.create_order, name="create_order"),
     # path("delete/<int:pk>/", views.delete_order, name="delete_order"),

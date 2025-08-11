@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework import generics
+from datetime import datetime
+from rest_framework.exceptions import PermissionDenied
 
 # @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
@@ -32,7 +34,7 @@ from rest_framework import generics
 #         return Response(serializer.data, status=status.HTTP_201_CREATED)
 #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ListCreateOrder(generics.ListCreateAPIView):
+class ListCreateDeleteOrder(generics.ListCreateAPIView, generics.DestroyAPIView):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
@@ -50,6 +52,12 @@ class ListCreateOrder(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(customer=self.request.user)
+
+    def perform_destroy(self, instance):
+        if datetime.now().hour < 12:
+            raise PermissionDenied("Orders can only be deleted before 12 PM.")
+        else:
+            instance.delete()
 
 # @api_view(['DELETE'])
 # @permission_classes([IsAuthenticated])
