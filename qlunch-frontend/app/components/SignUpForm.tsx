@@ -31,7 +31,7 @@ const signUpSchema = z.object({
     confirm_password: z.string().min(8, "Confirm password is required"),
 }).refine((data) => data.password === data.confirm_password, {
     message: "Passwords do not match",
-    path: ["confirmPassword"],
+    path: ["confirm_password"],
 });
 
 type SignUpFormInputs = z.infer<typeof signUpSchema>;
