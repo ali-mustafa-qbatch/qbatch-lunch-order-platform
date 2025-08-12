@@ -6,8 +6,8 @@ import { Footer } from "~/components/Footer";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "QLunch | Forgot Password" },
+    { name: "description", content: "Forgot Password page to reset account password." },
   ];
 }
 

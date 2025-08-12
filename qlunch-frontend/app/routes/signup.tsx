@@ -8,7 +8,7 @@ import { AuthProvider } from "../context/AuthContext";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Sign Up" },
+    { title: "QLunch | Sign Up" },
     { name: "description", content: "Welcome to sign up page!" },
   ];
 }
