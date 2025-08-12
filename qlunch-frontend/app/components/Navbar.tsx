@@ -30,7 +30,7 @@ export const Navbar = () => {
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0">
                         <Link to="/">
-                            <img src='Qbatch_logo.svg' alt="Qbatch Logo" className="h-8 w-auto" />
+                            <img src='/Qbatch_logo.svg' alt="Qbatch Logo" className="h-8 w-auto" />
                         </Link>
                     </div>
 
