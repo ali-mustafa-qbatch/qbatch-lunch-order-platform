@@ -17,7 +17,11 @@ type Restaurant = {
     menu_images: MenuImage[];
 };
 
-export function Restaurants() {
+type RestaurantsProps = {
+    onOrderSubmitted: () => void; 
+};
+
+export function Restaurants({ onOrderSubmitted } : RestaurantsProps) {
     const [isOrderDialogOpen, setOrderDialog] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
@@ -54,6 +58,7 @@ export function Restaurants() {
 
     const handleSubmit = (data: any) => {
         console.log("Submitted:", data);
+        onOrderSubmitted();
     };
 
     const openModal = (restaurantName: string) => {

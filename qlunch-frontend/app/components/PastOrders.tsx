@@ -20,7 +20,11 @@ const pastOrderSchema = z.object({
 export const PastOrdersResponseSchema = z.array(pastOrderSchema);
 export type PastOrder = z.infer<typeof pastOrderSchema>;
 
-export function PastOrders() {
+type PastOrdersProps = {
+    refreshOrders: number;
+};
+
+export function PastOrders({ refreshOrders }: PastOrdersProps) {
     const [pastOrders, setPastOrders] = useState<PastOrder[]>([]);
     const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
     const [isOrderModalOpen, setOrderModal] = useState(false);
@@ -73,7 +77,7 @@ export function PastOrders() {
         };
 
         loadPastOrders();
-    }, []);
+    }, [refreshOrders]);
 
     const deleteOrder = async (order: PastOrder) => {
         try {
