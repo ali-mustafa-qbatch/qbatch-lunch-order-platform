@@ -11,7 +11,7 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+export default function forgotpassword() {
   return (
     <AuthProvider>
       <main>
