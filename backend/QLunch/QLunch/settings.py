@@ -53,11 +53,14 @@ INSTALLED_APPS = [
     'storages',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'django_rest_passwordreset',
     'corsheaders',
     'orders',
     'restaurants',
     'users',
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # For development, use console backend to print emails to console (remove in production)
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -76,7 +79,7 @@ ROOT_URLCONF = 'QLunch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
