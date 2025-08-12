@@ -60,7 +60,15 @@ INSTALLED_APPS = [
     'users',
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # For development, use console backend to print emails to console (remove in production)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = env.bool('EMAIL_USE_SSL')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',

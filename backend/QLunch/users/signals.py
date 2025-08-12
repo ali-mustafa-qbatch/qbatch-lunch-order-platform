@@ -2,6 +2,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.conf import settings
 
 from django_rest_passwordreset.signals import reset_password_token_created
 
@@ -24,7 +25,8 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         'email': reset_password_token.user.email,
         'reset_password_url': "{}?token={}".format(
             instance.request.build_absolute_uri(reverse('password_reset:reset-password-confirm')),
-            reset_password_token.key)
+            reset_password_token.key),
+        'title': 'QLunch',
     }
 
     # render email text
@@ -32,14 +34,10 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     email_plaintext_message = render_to_string('email/user_reset_password.txt', context)
 
     msg = EmailMultiAlternatives(
-        # title:
-        "Password Reset for {title}".format(title="Some website title"),
-        # message:
-        email_plaintext_message,
-        # from:
-        "noreply@somehost.local",
-        # to:
-        [reset_password_token.user.email]
+        subject="Password Reset for {title}".format(title="Some website title"),
+        body=email_plaintext_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[reset_password_token.user.email]
     )
     msg.attach_alternative(email_html_message, "text/html")
     msg.send()
