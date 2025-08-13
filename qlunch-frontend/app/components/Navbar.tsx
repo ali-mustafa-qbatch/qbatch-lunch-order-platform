@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { useAuth } from '../context/AuthContext.js';
 import axiosInstance from "~/utils/axiosInstance";
@@ -6,6 +6,7 @@ import axiosInstance from "~/utils/axiosInstance";
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
     const { isAuthenticated, user, logout: authLogout } = useAuth();
 
     const toggleMenu = () => {
@@ -24,8 +25,25 @@ export const Navbar = () => {
         }
     };
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 50) { // Adjust threshold as needed
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <nav className="bg-transparent fixed top-0 left-0 w-full z-50">
+        <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+            isScrolled
+                ? 'bg-white/30 backdrop-blur-md shadow-md'
+                : 'bg-transparent'
+        }`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0">
