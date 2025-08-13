@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { AuthProvider } from "../context/AuthContext";
-import { Navbar } from "~/components/Navbar";
+// import { Navbar } from "~/components/Navbar";
 import { HomePage } from "~/components/HomePage";
 import ArcGalleryHero from "~/components/arc-gallery-hero";
 import { Footer } from "~/components/Footer";
@@ -30,7 +30,7 @@ export default function Home() {
   return (
     <AuthProvider>
       <main>
-        <Navbar />
+        {/* <Navbar /> */}
         <ArcGalleryHero images={images} />
         <HomePage />
         <Footer />

@@ -35,8 +35,8 @@ export const Navbar = () => {
                     </div>
 
                     <div className="hidden md:flex items-center space-x-6">
-                        <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</Link>
-                        <a href="/#past-orders" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Past Orders</a>
+                        <Link to="/" className="text-gray-100 hover:text-gray-900 px-3 py-2 text-sm font-medium">Home</Link>
+                        <a href="/#past-orders" className="text-gray-100 hover:text-gray-900 px-3 py-2 text-sm font-medium">Past Orders</a>
                         {isAuthenticated ? (
                             <div className="relative">
                                 <button
@@ -46,7 +46,7 @@ export const Navbar = () => {
                                     <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-bold text-lg">
                                         {user?.username?.charAt(0)?.toUpperCase() || "?"}
                                     </div>
-                                    <span className="text-gray-700 font-medium">{user?.username}</span>
+                                    <span className="text-gray-100 font-medium">{user?.username}</span>
                                 </button>
 
                                 {isProfileMenuOpen && (
@@ -56,7 +56,7 @@ export const Navbar = () => {
                                                 logout();
                                                 setProfileMenuOpen(false);
                                             }}
-                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                            className="block w-full text-left px-4 py-2 text-sm text-gray-900"
                                         >
                                             Logout
                                         </button>
@@ -65,8 +65,8 @@ export const Navbar = () => {
                             </div>
                         ) : (
                             <>
-                                <Link to="/sign-in" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Sign In</Link>
-                                <Link to="/sign-up" className="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Get Started</Link>
+                                <Link to="/sign-in" className="text-gray-100 hover:text-gray-900 px-3 py-2 text-sm font-medium">Sign In</Link>
+                                <Link to="/sign-up" className="text-gray-100 hover:text-gray-900 px-3 py-2 text-sm font-medium">Get Started</Link>
                             </>
                         )}
                     </div>
@@ -75,7 +75,7 @@ export const Navbar = () => {
                         <button
                             type="button"
                             onClick={toggleMenu}
-                            className="text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             aria-controls="mobile-menu"
                             aria-expanded={isOpen}
                             aria-label="Toggle navigation menu"
@@ -100,23 +100,23 @@ export const Navbar = () => {
             </div>
 
             <div className={`md:hidden ${isOpen ? 'block' : 'hidden'}`} id="mobile-menu">
-                <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-b shadow-sm">
-                    <Link to="/" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                <div className="px-2 pt-2 pb-3 space-y-1 bg-transparent border-b shadow-sm">
+                    <Link to="/" className="block text-gray-100 hover:text-gray-900 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
                         Home
                     </Link>
-                    <a href="/#past-orders" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                    <a href="/#past-orders" className="block text-gray-100 hover:text-gray-900 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
                         Past Orders
                     </a>
                     {isAuthenticated ? (
-                        <button className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
+                        <button className="block text-gray-900 hover:text-gray-900 px-3 py-2 text-base font-medium" onClick={() => { setIsOpen(false); logout(); }}>
                             Logout
                         </button>
                     ) : (
                         <>
-                            <Link to="/sign-in" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                            <Link to="/sign-in" className="block text-gray-100 hover:text-gray-900 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
                                 Sign In
                             </Link>
-                            <Link to="/sign-up" className="block text-gray-700 hover:text-blue-600 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
+                            <Link to="/sign-up" className="block text-gray-100 hover:text-gray-900 px-3 py-2 text-base font-medium" onClick={() => setIsOpen(false)}>
                                 Get Started
                             </Link>
                         </>
