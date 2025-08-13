@@ -19,7 +19,7 @@ const ArcGalleryHero: React.FC<ArcGalleryHeroProps> = ({
     startAngle = -110,
     endAngle = 110,
     radiusLg = 340,
-    radiusMd = 280,
+    radiusMd = 320,
     radiusSm = 200,
     cardSizeLg = 120,
     cardSizeMd = 100,
@@ -69,7 +69,7 @@ const ArcGalleryHero: React.FC<ArcGalleryHeroProps> = ({
                         height: dimensions.radius * 1.2,
                     }}
                 >
-                    <div className="absolute left-1/2 bottom-0 -translate-x-1/2">
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
                         {images.map((src, i) => {
                             const angle = startAngle + step * i;
                             const angleRad = (angle * Math.PI) / 180;
@@ -110,7 +110,7 @@ const ArcGalleryHero: React.FC<ArcGalleryHeroProps> = ({
 
                 </div>
 
-                <div className="relative z-10 flex-1 flex items-center justify-center px-6 -mt-40 md:-mt-52 lg:-mt-64">
+                <div className="relative z-10 flex-1 flex items-center justify-center px-6 sm:-mt-40 md:-mt-52 lg:-mt-64">
                     <div className="text-center max-w-2xl px-6 opacity-0 animate-fade-in" style={{ animationDelay: '800ms', animationFillMode: 'forwards' }}>
                         <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-200" style={{ WebkitTextStroke: '1px black', color: 'white' }}>
                             Make QLunch your new obsession
